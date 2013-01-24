@@ -1,0 +1,181 @@
+Version 1.1.5 - August 22, 2012
+===============================
+- FIXED: Addressed crash in java.net.NetworkInterface. Library will explicitly catch a
+  NullPointerException caused by ICS bug. See http://code.google.com/p/android/issues/detail?id=33661
+
+Version 1.1.4 - July 31, 2012
+=============================
+- FIXED: Reset backoffTime after successful C2DM registration
+- FIXED: Updated the copyright for 2012
+- FIXED: Removed logging of app secret in takeOff
+- Moved log levels to airshipconfig.properties
+- Added a User-Agent to the httpclient
+- Added handling for the new boolean return from EmbeddedPushManager.init()
+- Added logic to handle when no location providers are available.
+- Wrapped db calls in EventDataManager so sqliteexception's won't kill apps.
+- Added the application package name to implicitly broadcasted actions.
+
+Version 1.1.3 - May 4, 2012
+===========================
+- FIXED: issue with location event payload
+
+Version 1.1.2 - May 1, 2012
+===========================
+- FIXED: incorrect handling of minimum updated time in location preferences
+- FIXED: unnecessary starting of location service
+- Updated target SDK level of sample apps to API level 9 to address ICS
+  notification background rendering issues
+
+Version 1.1.1 - April 11, 2012
+=============================
+- FIXED: Issues with background location
+- FIXED: Issues with no location providers enabled
+- Sample App updates
+
+Version 1.1.0 - April 3, 2012
+=============================
+- Added location collection for Push to Location
+- FIXED: C2DM null APIDs will now be regenerated
+- FIXED: C2DM deregistration race condition is resolved
+
+Version 1.0.9 - March 1, 2012
+=================================
+- FIXED: Character encoding bug preventing push registration with Unicode tags
+
+Version 1.0.8 - February 16, 2012
+=================================
+- FIXED: Hybrid mode now works on the Kindle Fire
+- FIXED: Retry inserts to analytics DB when write fails due to DB lock
+- FIXED: Connectivity issues following device sleep
+- FIXED: Default to a maximum of 40 notifications (from 100). Android allows a given app to post up to 50.
+- Added additional analytics data points
+- Added a note to the "Holding Pattern" error to indicate that it can occur during scheduled maintenance.
+- Added an option to wake a wifi-only device periodically to receive notifications
+
+Version 1.0.7 - December 15, 2011
+=================================
+- FIXED: Crash occurring when UA API registrations were disabled
+
+Version 1.0.6 - December 14, 2011
+=================================
+- FIXED: Cached Helium server list is no longer removed when the connection is destroyed
+- FIXED: Helium connections dropped due to network reachability issues will no longer invalidate the server
+- Improved reconnection logic when Android sends multiple connectivity intents
+- The Helium server cache TTL is now configurable by the server
+- Added a short 3 sec delay after server lookup to allow server-side state to propagate
+- Use elapsed realtime clock for heartbeat timer rather than the wall clock
+
+Version 1.0.5
+=============
+- Improved socket keepalive logic
+
+Version 1.0.4
+=============
+- StrictMode compatibility for analytics events and com.urbanairship.restcient.*
+- Fixed incomptibility between Request.executeAsync and API level 11+ 
+- Improved InventoryAdapter and Drawable caching in IAPSample
+- Fixed AsyncImageLoader OutOfMemoryException issue
+- New PushManager.getApid convenience method
+- Disabling push results in a call to DELETE an existing APID on go.urbanairship.com 
+- Improved C2DM registration handling
+
+Version 1.0.3
+=============
+- Fixed an issue preventing immediate connections to Helium when re-enabling push notifications
+
+Version 1.0.2
+=============
+
+- Improved Helium connectivity
+- Added push expiration handling
+- Added additional key and secret validation
+- PushService now stops when push is disabled
+- Added helpful logging, removed unhelpful logging
+
+Version 1.0.1
+=============
+
+New Features
+------------
+- Manifest validation for both IAP and Push reports permission, receiver and service
+  misconfiguration in the log
+- AirshipConfigOptions validation now reports specific errors in the log
+
+Push Changes
+------------
+- Explicitly log errors when PushService is started before UAirship.takeOff has been called.
+- Documented and deprecated PushManager.EXTRA_STRING_EXTRA. Push extras should be sent as a
+  Map<String,String>
+- Sample app now iterates through the extras instead of using EXTRA_STRING_EXTRA
+- Fixed NullPointerException occurring when a user opened a notification when an intent receiver
+  had not been registered with PushManager
+- Helium now explicitly reports when connections are denied due to billing status
+- Aliases can now be removed by passing null to PushManager.setAlias()
+- ACTION_REGISTATION_FINISHED is now called only after the APID is valid and can receive pushes
+- BasicPushNotificationBuilder and CustomPushNotificationBuilder now ignore pushes where the alert
+  payload is null or empty. To override this behavior, provide your own implementation of
+  PushNotificationBuilder.
+
+IAP Changes
+-----------
+- Moved IMarketBillingService from the JAR to the sample project (requires projects to include
+  IMarketBillingService.aidl in their source tree)
+- Repackaged all Google billing code to prevent conflicts (no action required)
+- Use Product ID instead of product name for download location
+- IAP download paths are now sanitized to prevent write failure on SD cards
+- Purchased products can now be restored at any time
+
+Version 1.0.0
+=============
+
+New Features
+------------
+- Added Push Settings UI to PushSample
+- Devices can now switch from C2DM to Helium
+
+Bug Fixes
+---------
+- Properly handle C2DM failures in devices with an API Level < 8
+- Ignore C2DM registration intents if the current transport type
+  does not use C2DM
+- Properly deregister a device from C2DM if push is disabled
+- Fixed a Helium push NPE if UA servers refuse connections
+
+Other Changes
+-------------
+- Cleaned up logging
+- Replaced various broadcast receivers with com.urbanairship.CoreReceiver (this requires
+  a Manifext.xml change as the CoreReceiver package changed)
+- Added Status Bar icon field to CustomNotificationBuilder
+- Added C2DM Ping capability (invisible push for audience counting)
+- Updated sample projects with improved layouts and explicit Honeycomb compatibility
+
+
+Version 0.9.1
+=============
+
+New Features
+------------
+- C2DM Support
+- Reports Support
+- Built in APID Tagging and Alias support
+
+Bug Fixes
+---------
+- Fixed asynchronous image loading issue in the InventoryAdapter class in StoreFront sample
+- Notification builders can now return null if a notification should not be displayed
+- Sending a notification with an empty alert field prevents the notification from being
+  displayed by the default notification builders
+
+Other Changes
+-------------
+- Combined Push/IAP HTTP clients in the rest client package
+- IAP Sorting updates
+- EmbeddedPushService is now called PushService (to accommodate C2DM). A manifest change is
+  required
+- Analytics/Reporting push received proxy broadcast handler must be registered in
+  AndroidManifest.xml
+- In your implementation of the custom push/registration IntentReceiver,
+  PushManager.ACTION_NOTIFICATION_OPENED_BASE should now be
+  PushManager.ACTION_NOTIFICATION_OPENED
+- The REGISTRATION_FINISHED action now has C2DM-specific extras

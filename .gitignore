@@ -1,0 +1,9 @@
+.DS_Store
+*.d
+*.o
+*.pyc
+*.class
+workspace.xml
+R.java
+nimast.xml
+org.eclipse.core.resources.prefs

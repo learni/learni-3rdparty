@@ -1,0 +1,23 @@
+------------------------------------
+PDFNet SDK Registration Information:
+------------------------------------
+
+Company: Bligear Ltd.(bligear.co.il)
+Contact: Uri Kaplan
+License Model: OEM
+License Type: PDFNet Core (Mobile) SDK
+Application Name: Bligear Collaborative eReader
+Platform(s): Android
+AMC (Annual Maintenance Contract): 11 / 06 / 2013
+
+License Key: 
+
+Bligear Ltd.(bligear.co.il):OEM:Bligear Collaborative eReader::LE:AMC(20130611):B9C6E9223AE893439D571D954476BCF4FB3DAC54C2CBDECAC7684980F9F0FA
+
+------------------------------------
+To register the software simply copy the entire license key (as specified
+above) and paste it as the parameter in the call to PDFNet.Initialize().
+
+For example: PDFNet.Initialize("...my license key...");
+
+Note: Please make sure that the license key is specified on a single line.

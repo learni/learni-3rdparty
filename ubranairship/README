@@ -1,0 +1,15 @@
+
+Welcome to the Urban Airship client library for Android.  Simply add the jar file contained in 
+this distribution to your build path and you're ready to go.  We've also included a few sample 
+projects to help you get started.
+
+Documentation
+-------------
+
+For instructions on integrating this library with your Android project, see:
+
+http://urbanairship.com/docs/android-client-library.html
+
+For Javadoc, see:
+
+http://urbanairship.com/docs/android-lib/reference/com/urbanairship/package-summary.html

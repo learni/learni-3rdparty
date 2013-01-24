@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:padding="5dp"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent">
+	<ImageView
+		android:id="@+id/status_icon"
+		android:layout_width="wrap_content"
+		android:layout_height="fill_parent"
+		android:layout_alignParentLeft="true"
+	/>
+	<RelativeLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:paddingLeft="10px"
+		android:layout_toRightOf="@id/status_icon">
+		<TextView
+			android:id="@+id/status_text"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:layout_alignParentTop="true"
+			android:textColor="#000"
+			android:textSize="14sp"
+			android:textStyle="bold"
+		/>
+		<FrameLayout
+			android:id="@+id/status_progress_wrapper"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/status_text"
+			android:layout_width="fill_parent">
+			<ProgressBar
+				android:id="@+id/status_progress"
+				android:layout_height="wrap_content"
+				android:layout_below="@id/status_text"
+				android:progressDrawable="@android:drawable/progress_horizontal"
+				android:indeterminate="false"
+				android:indeterminateOnly="false" android:layout_width="fill_parent"/>
+		</FrameLayout>
+		
+		<FrameLayout
+			android:id="@+id/status_wheel_wrapper"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/status_text"
+			android:layout_width="wrap_content" android:layout_centerInParent="true"
+			android:visibility="gone">
+			<ProgressBar
+				android:id="@+id/status_wheel"
+				android:layout_height="50px"
+				android:layout_below="@id/status_text"
+				android:indeterminate="true"
+				android:indeterminateOnly="true"
+				android:layout_width="50px" android:layout_centerInParent="true"
+				style="@android:style/Widget.ProgressBar.Inverse"/>
+		</FrameLayout>
+	</RelativeLayout>
+</RelativeLayout>

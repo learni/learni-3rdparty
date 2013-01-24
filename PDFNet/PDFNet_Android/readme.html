@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+	<head>
+		<meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+		<meta name="description" content="PDFNet SDK is the complete PDF toolkit. Using PDFNet library you can write stand-alone, cross-platform, and reliable commercial applications that can read, write, and edit PDF documents in C#, VB.NET, C++, and other languages"/>
+		<link href="Doc/images/tronsheet.css" type="text/css" rel="stylesheet">
+		<title>PDFTron PDFNet</title>
+	</head>
+	
+	<body>
+<table class="main" cellspacing="0" cellpadding="0" align="center">
+			<tr><td><img src="Doc/images/banner_logo.gif" alt="PDFTron logo"></td></tr>
+			
+			<tr>
+				<td class="cont">
+				
+				<table cellspacing="10" cellpadding="0">
+        <tr> 
+          <td  style="vertical-align:top;">
+            <h1>About PDFNet SDK</h1>
+            <p>
+			  PDFNet SDK is a high-quality, industry-strength PDF library meeting 
+              requirements of the most demanding and diverse applications. Using 
+              PDFNet you can write stand-alone, cross-platform, and reliable commercial 
+              applications that can read, write, edit, print and display PDF documents. 
+              PDFNet SDK is available as a .NET component and as a cross-platform 
+              Java and C/C++ PDF library available on a wide range of platforms 
+              (i.e. Windows, Linux, Mac OS X, Solaris, Windows Mobile, iOS, Android etc). For 
+              more information, please visit us at <a href="http://www.pdftron.com">www.pdftron.com</a>.
+             </p>
+              
+            <h1>Package Directory Structure Overview</h1>
+            <ul>
+              <li><a href="Doc/">Doc</a> - The folder containing PDFNet API Reference.</li>
+              <li><a href="Lib/">Lib</a> - The folder containing PDFNet libraries.</li>
+			  <li><a href="Headers/">Headers</a> - The folder containing C++ headers for developing native code.</li>
+              <li><a href="Samples/">Samples</a> - The folder containing some sample projects.</li>
+              <li><a href="legal.txt">legal.txt</a> - Legal and copyright information.</li>
+			  <li><a href="version.txt">version.txt</a> - Native and SDK version information.</li>
+              <li><a href="license.pdf">license.pdf</a> - CPU license agreement and warranty for this product.</li>
+              <li><a href="readme.html">readme.html</a>- This file.</li>
+            </ul>
+ 
+           <h1>Lib</h1>
+           <ul>
+           	<li>Contains the PDFNet library (PDFNet.jar) and the add-on tool library (Tools.jar) for <a href="./Doc/pdftron/PDF/PDFViewCtrl.html">PDFViewCtrl</a> class. The libraries support Android 2.2 or higher.
+           	<li>Contains the native libraries 'armeabi/libPDFNetC.so' (arm v6 version), 'armeabi-v7a/libPDFNetC-v7a.so' (arm v7 version), and 'x86/libPDFNetC.so' (x86 version).
+			Note that the x86 library has only been tested on Android 4.1 (API 16).
+           	<li>Tools.jar library offers, via <a href="./Doc/pdftron/PDF//PDFViewCtrl.ToolManager.html"> PDFViewCtrl's tool interface</a>,  UI modules that use PDFNet functions to add extra ready-to-use components such as annotation editing, text selection, text search, form filling, quick menu, etc. The source code of Tools.jar is available in the licensed version and customers are able to fully customize it.
+           </ul>
+		   
+		   <h1>Headers</h1>
+           <ul>
+           	<li>Contains the C++ header files that can be used with the native library in 'Lib' folder. These files are only provided for developing
+			native code. Note that some unsuitable classes, including PDFView, PDFViewCtrl and Print, are not included.
+           </ul>
+            
+           <h1>Samples</h1>
+           	<ul>
+           		<li>Contains samples for certain PDFNet classes. The 'PreBuilt' sub-directory contains the built APKs of the samples on different architectures.
+           		<li><a href="Samples/PDFViewCtrlDemo">PDFViewCtrlDemo</a> shows how to use <a href="./Doc/pdftron/PDF/PDFViewCtrl.html">PDFViewCtrl</a> to easily build a PDF viewer with a rich set of functionalities. 
+					<p>Some hints about using this viewer:
+						<br>(1) pinch or double tap to zoom;
+						<br>(2) long press in an empty region to bring up annotation menu;
+						<br>(3) long press on text for text selection;
+						<br>(4) single tap or long press on a annotation to select it;
+						<br>(5) tap in the top quarter to bring up the top tool bar (for text se arch);
+						<br>(6) tap in the bottom quarter to bring up the bottom tool bar (for page navigation);
+						<br>(7) click the option menu on the system tool bar for more options.
+					</p>
+				<li><a href="Samples/PDFDrawDemo">PDFDrawDemo</a> is a simple example that shows how <a href = "./Doc/pdftron/PDF/PDFDraw.html">PDFDraw</a> can be used to make a simple PDF viewer. Tap top (bottom) half of the viewer to turn pages backward (forward).
+			</ul>
+						
+			
+		   <h1>How to Build with Eclipse</h1>
+		   It is convenient to build and debug an Android project using Google's ADT Plugin. The following steps brief how to build, say <a href="Samples/PDFViewCtrlDemo">PDFViewCtrlDemo</a>, using Eclipse with ADT.
+		   <ul>
+			   <li>Setup ADT in Eclipse as described in <a href="http://developer.android.com/sdk/installing.html"> this article</a>;
+			   <li>Copy the content from 'Lib' to the sample's 'libs' folder. Note that you can copy all the subfolders ('armeabi', 'armeabi-v7a' and 'x86') to make the output apk compatible on all platforms. 
+			   Android will load the proper library during installation. If you know which platform is targeted, you only need to copy one of them.
+			   <li>Go to “File -> New -> Projects…” and select “Android -> Android Project…”;
+			   <li>Type in the project name (say PDFViewCtrlDemo), and select “Create project from existing source” and in “Location :”, 
+			   browse to '/PDFViewCtrlDemo' foler;
+			   <li>Click “Next” to select the Build Target, say Android 3.0, and then click “Finish”. Note that PDFNet Android SDK supports Android 2.2 and higher;
+			   <li>Right click the project “PDFViewCtrlDemo” in the Package Explore panel and select “Properties”;
+			   <li>Select “Java Build Path -> Libraries”;
+			   <li>Click “Add Jars…” and browse to “PDFViewCtrlDemo/libs/” and select PDFNet.jar. You will do this again to select Tools.jar;
+		   </ul>
+		   Now, you are ready to build and run the project given that you have an Android device available. You can use either a <a href="http://developer.android.com/guide/developing/devices/index.html"> virtual device </a> or a <a href="http://developer.android.com/guide/developing/device.html"> hardware device</a>.
+		   
+           <h1>More Documentation</h1>
+            <ul>
+              <li>PDFNet What's New: <a href="http://www.pdftron.com/net/whatsnew.html">http://www.pdftron.com/pdfnet/whatsnew.html</a></li>
+              <li>PDFNet FAQ: <a href="http://www.pdftron.com/net/faq.html">http://www.pdftron.com/</a><a href="http://www.pdftron.com/net/whatsnew.html">pdf</a><a href="http://www.pdftron.com/net/faq.html">net/faq.html</a></li>
+              <li>PDFNet Knowledge Base: <a href="http://groups.google.com/group/pdfnet-sdk">http://groups.google.com/group/pdfnet-sdk</a></li>
+              <li>PDFNet Sample Code: <a href="http://www.pdftron.com/net/samplecode.html">http://www.pdftron.com/net/samplecode.html</a></li>
+              <li>PDFNet User Manual: <a href="http://www.pdftron.com/net/usermanual.html">http://www.pdftron.com/</a><a href="http://www.pdftron.com/net/whatsnew.html">pdf</a><a href="http://www.pdftron.com/net/usermanual.html">net/usermanual.html</a></li>
+            </ul>
+            
+            <h1>Technical Support</h1>
+            <p>At PDFTron, we understand that good technical support is as
+              important to our customers as our products themselves. Our
+              technical support team consists of the same developers that 
+              build our products, work on new features and fix the bugs.
+              This ensures that our customers receive accurate and to-the-
+              point answers to their questions or problems. </p>
+            <p>For details related to technical support, please 
+              refer to PDFTron support page: <a href="http://www.pdftron.com/support.html">http://www.pdftron.com/support.html</a>. </p>
+            <p>You can submit bug reports directly through our support webpage (<a href="http://www.pdftron.com/support/reportproblem.html">http://www.pdftron.com/support/reportproblem.html</a>) 
+              or by sending a bug report via email to <a href="mailto:support@pdftron.com">support@pdftron.com</a>.</p>
+            <p>If you are sending an email, please include the following information
+              when submitting a bug report: </p>
+            <ul> <li>Your Name and Company / Contact information.</li>
+              <li>PDFNet Product and Version</li>
+              <li>Operating System</li>
+              <li>Detailed description of the problem.</li>
+              <li>Are you subscribed to annual maintenance?</li>
+			  </ul>
+            <h1>Call for Success Stories!</h1>
+            <p>We are always looking for practical examples of solutions achieved 
+              by our customers using our products, as well as, feedback on your 
+              level of satisfaction with our products and customer service.</p>
+            <p>If you have an interesting solution using our products or would 
+              like to offer us some feedback, please email: <a href="mailto:info@pdftron.com">info@pdftron.com</a>.</p>
+            <p>Thank you!</p>
+            <br>
+            <hr>
+            <p>Copyright (c) 2002-2012 by PDFTron Systems, Inc. All Rights Reserved. PDFTron, PDFNet SDK and PDF CosEdit are either trademarks 		and/or service marks and/or registered trademarks of PDFTron Systems Incorporated in Canada, United States and/or other countries.</p>
+            </td>
+        </tr>
+      </table>	
+				</td>
+			</tr>				
+		</table>			
+		
+				
+	</body>
+</html>

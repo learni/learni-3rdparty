@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:icon="@drawable/menu_open" android:id="@+id/open_file" android:title="Open" />
+    <item android:icon="@drawable/menu_open_url" android:id="@+id/open_url" android:title="Open URL" />
+    <item android:icon="@drawable/menu_save" android:id="@+id/save_file" android:title="Save" />
+    <item android:icon="@drawable/menu_settings" android:id="@+id/settings" android:title="Settings" />
+</menu>

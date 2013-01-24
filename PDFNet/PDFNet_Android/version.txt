@@ -1,0 +1,113 @@
+
+CURRENT RELEASE
+
+**** Release Date: November, 30, 2012 ****
+-- Version: 
+	5.9.1.16176
+-- Notes
+	* Fixed an issue that on Android 16 (Jelly Bean 4.1), zooming might cause page change in single page mode. This
+		is caused by the new gesture dectector behavior on Android 16.
+	* Added PDFNet.setViewerCache() and PDFViewCtrl.setViewerCache() to support fast rendering.
+	* Added PDFViewCtrl.setPageRefViewMode() and PDFViewCtrl.getPageRefViewMode() to control the page view/fit mode upon page change.
+    * Fixed an issue with the page indicator being drawn in a different position when sliding pages. This is caused
+        when the hardware acceleration is turned on in the manifest and the device is running Android >= ICS.
+	
+	
+
+
+OLD RELEASES
+
+**** Release Date: November, 8, 2012 ****
+-- Version: 
+	5.9.0.15913
+-- Notes
+	* Added support for x86 architecture. Note that currently it has only been tested on Android 4.1 (API 16).
+    * Added support for right-to-left language in TextExtrator.
+	* Fixed a bug that might cause occasional crashes on Android 4.0 and above.
+	* New Digital Signature API.
+	* Added support for using cache file for PDFViewCtrl.openURL().
+	* Fixed a bug that might cause mismatch between page thumb and page content when PDFViewCtrl.openURL() is used.
+	* Added automatic font substitution capability for missing fonts.
+	* Added PDFViewCtrl.showRect().
+	* Added FreeText tool in Tools.jar.
+	* Misc bug fixes and improvements.
+	
+	
+**** Release Date: August, 27, 2012 ****
+-- Version: 
+	5.8.2.14916
+-- Notes
+    * Added PDFViewCtrl.setTool() to set the current tool used by PDFViewCtrl without going through the ToolManager interface.
+	* Added PDFViewCtrl.update(boolean) to allow update all the rendered regions, not just the visible region.
+	* Added PDFViewCtrl.setRightToLeftLanguage(boolean) to support right-2-left languages.
+	* Added PDFViewCtrl.getPageSlidingCanvasTransform().
+	* Added pdftron.Filters.CustomFilter to support custom reading/writting. An example is added to PDFViewCtrlDemo.
+	* Added pdftron.PDF.PDFDoc.save(pdftron.Filters.Filter) method to save to a filter.
+	* Fixed an issue in JB that clicking a QuickMenu item doesn't properly set the tool.
+	* Changed PDFViewCtrl.openURL() to start downloading in a worker thread to prevent UI from being locked up.
+	* Added Font.createTrueTypeFont(Doc, java.io.InputStream, ...), and Font.createCIDTrueTypeFont(Doc, java.io.InputStream, ...) methods.
+	* Misc bug fixes and improvements.
+
+
+**** Release Date: June, 19, 2012 ****
+-- Core Version: 
+	5.8.1.14214
+-- SDK Version: 
+	1.2.14214
+-- Notes
+    * Fixed an issue that panning might cause drifting: starting finger position on the page is different from ending finger position on the page.
+	* Added support for simultaneous panning and zooming.
+	* Fixed a glitch in loading native PDFNet library related to the bug in ICS.
+	* Added PDFViewCtrl.setCurrentPage() to be consistent with PDFNet APIs on other platforms, and deprecated PDFViewCtrl.gotoPage().
+	* Added PDFViewCtrl.setRenderedContentCacheSize() to control PDFViewCtrl's content memory usage.
+	* Misc bug fixes and improvements.
+	
+
+**** Release Date: May, 29, 2012 ****
+-- Core Version: 
+	5.8.0.13964
+-- SDK Version: 
+	1.2.13964
+-- Notes
+    * Added TextExtractor.getTextUnderAnnot() function and added the example usage in Tools.jar.
+    * Added PDFViewCtrl.setZoom(double zoom, boolean use_snapshot) and PDFViewCtrl.setZoom(int x, int y, double zoom, boolean use_snapshot) methods. Also
+	  added the sample code in Tools.jar (Tool.onDoubleTap()) to show how to customize PDFViewCtrl's onDoubleTap behavior.
+	* Added PDFViewCtrl.RenderingListener interface and PDFViewCtrl.setRenderingListener() to listen to start and end rendering events. Also added sample
+	  code in PDFViewCtrlDemo to show how to use them to show a spinner while PDFViewCtrl is rendering.
+	* Fixed the positioning bug in QuickMenu due to the bug in ICS (API 14, 15).
+	* Added 'Headers' folder in the SDK that contains the C++ header files that can be used with the native library to write native code.
+	* Changed the armv7 native library's name from "Lib\armeabi-v7a\libPDFNetC.so" to "Lib\armeabi-v7a\libPDFNetC-v7a.so". This is to get around the bug
+	  that ICS doesn't load armv7 version of the library properly even if a device is armv7 compatible.
+	* Misc bug fixes and improvements.
+	
+
+**** Release Date: April, 18, 2012 ****
+-- Core Version: 
+	5.8.0.13628
+-- SDK Version: 
+	1.2.13628
+-- Notes
+    * Fixed a bug in security handler (handling).
+    * Modified sticky note creation so that the content dialog is opened immediately after the sticky is created.
+    * When a text annotation is selected, its bounding box is highlighted.
+    * Removed PDFViewCtrl.getAppliedCanvasTransform() and changed Tool.onDraw(Canvas) to Tool.onDraw(Canvas, Matrix).
+	
+
+**** Release Date: April, 05, 2012 ****
+-- Core Version: 
+	5.8.0.13559
+-- SDK Version: 
+	1.2.13559
+-- Notes
+	* Added PDFViewCtrl.openURL() for supporting incremental downloading/viewing.
+	* Added PDFViewCtrl.Tool.onDocumentDownloadEvent() interface for receiving download events.
+	* Added PDFViewCtrl.DocumentDownloadListener interface for receiving download events.
+	* Added PDFViewCtrl.setDocumentDownloadListener() function.
+	* Added PDFViewCtrl.getAppliedCanvasTransform() to query the extra transformation matrix PDFViewCtrl applied to its Canvas.
+	* Modified how page sliding is handled so that contents drawn in PDFViewCtrl.Tool.onDraw() are still relative to the moving pages.
+	* Added PDFViewCtrl.isFinishedRendering(bool) to check if the current visible region is fully rendered.
+	* Addded PDFViewCtrl.waitForRendering() function that can be called to avoid flickering.
+	* Added PDFViewCtrl.setZoomLimit() function to cap zoom levels.
+	* Modified PDFViewCtrl.setClientBackgroundColor() to allow transparent background.
+	* Modified PDFViewCtrlDemo.java to show how to add background image, how to set zoom limits, and how to open a URL.
+	* Fixed a bug in sticky note creation (StickNoteCreate class in tools.jar).
