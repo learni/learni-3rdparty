@@ -69,12 +69,12 @@ public:
     virtual ~SignatureHandler();
 
 #ifndef SWIGHIDDEN_SIG
-    static void TRN_SIGAPI TRN_SignatureHandlerGetNameImpl(TRN_UString* out_filter, void* derived);
-    static void TRN_SIGAPI TRN_SignatureHandlerAppendDataImpl(const TRN_SignatureData in_data, void* derived);
-    static TRN_Bool TRN_SIGAPI TRN_SignatureHandlerResetImpl(void* derived);
-    static TRN_SignatureData TRN_SIGAPI TRN_SignatureHandlerCreateSignatureImpl(void* derived);
-    //static TRN_ValidateSignatureResult TRN_SIGAPI TRN_SignatureHandlerValidateSignatureImpl(TRN_Obj in_sig_dict, void* derived);
-    static void TRN_SIGAPI TRN_SignatureHandlerDestroyImpl(void* derived);
+    static TRN_Exception TRN_SIGAPI TRN_SignatureHandlerGetNameImpl(TRN_UString* out_name, void* derived);
+    static TRN_Exception TRN_SIGAPI TRN_SignatureHandlerAppendDataImpl(const TRN_SignatureData in_data, void* derived);
+    static TRN_Exception TRN_SIGAPI TRN_SignatureHandlerResetImpl(TRN_Bool* out_result, void* derived);
+    static TRN_Exception TRN_SIGAPI TRN_SignatureHandlerCreateSignatureImpl(TRN_SignatureData* out_signature, void* derived);
+    //static TRN_Exception TRN_SIGAPI TRN_SignatureHandlerValidateSignatureImpl(TRN_Obj in_sig_dict, TRN_ValidateSignatureResult* out_result, void* derived);
+    static TRN_Exception TRN_SIGAPI TRN_SignatureHandlerDestroyImpl(void* derived);
 
     std::vector<UInt8> m_signature_data;
 #endif // SWIGHIDDEN_SIG

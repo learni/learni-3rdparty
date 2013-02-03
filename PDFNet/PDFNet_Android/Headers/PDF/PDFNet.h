@@ -124,7 +124,7 @@ public:
 
 	/**
 	 *
-	 *  Sets the default parameters for the viewer cache.  Any subsequently opened documents
+	 *  Sets the default parameters for the viewer cache.  Any subsequently created documents
 	 *	will use these parameters.
 	 *
 	 *	@param max_cache_size - The maximum size, in bytes, of the entire document's page cache.

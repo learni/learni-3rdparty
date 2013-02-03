@@ -13,21 +13,12 @@ extern "C" {
 
 #include <C/Common/TRN_Types.h>
 
-#ifdef __iOS__
-enum TRN_TextSearchResultCode
-{
-	e_done = 0,
-	e_page_stopped = 1,
-	e_found = 2
-};
-#else
 enum TRN_TextSearchResultCode
 {
     e_done = 0,
     e_page = 1,
     e_found = 2
 };
-#endif
 
 enum TRN_TextSearchMode
 {

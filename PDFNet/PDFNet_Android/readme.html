@@ -47,6 +47,7 @@
            	<li>Contains the native libraries 'armeabi/libPDFNetC.so' (arm v6 version), 'armeabi-v7a/libPDFNetC-v7a.so' (arm v7 version), and 'x86/libPDFNetC.so' (x86 version).
 			Note that the x86 library has only been tested on Android 4.1 (API 16).
            	<li>Tools.jar library offers, via <a href="./Doc/pdftron/PDF//PDFViewCtrl.ToolManager.html"> PDFViewCtrl's tool interface</a>,  UI modules that use PDFNet functions to add extra ready-to-use components such as annotation editing, text selection, text search, form filling, quick menu, etc. The source code of Tools.jar is available in the licensed version and customers are able to fully customize it.
+			<li>To use the SDK you will need to compile with API level 11 (or higher) as the SDK uses some Honeycomb features if those are present at run-time.
            </ul>
 		   
 		   <h1>Headers</h1>
@@ -69,13 +70,18 @@
 						<br>(7) click the option menu on the system tool bar for more options.
 					</p>
 				<li><a href="Samples/PDFDrawDemo">PDFDrawDemo</a> is a simple example that shows how <a href = "./Doc/pdftron/PDF/PDFDraw.html">PDFDraw</a> can be used to make a simple PDF viewer. Tap top (bottom) half of the viewer to turn pages backward (forward).
+				<li><a href="Samples/PDFNetSDKSampleDemo">PDFNetSDKSampleDemo</a> is an application that shows the functionalities of the PDFNet SDK and includes the samples found in the <a href="http://www.pdftron.com/pdfnet/samplecode.html">sample code</a> page. Inspect its source code to learn how to use some of the main classes and features of the SDK, or just run the sample and check the results.
+					<p>Notes:
+						<br>(1) To run the DigitalSignatures sample you will need to donwload and install separately the <a href="http://rtyley.github.com/spongycastle/">Spongy Castle</a> libraries. Place the jar files in the 'libs' folder of the project and change DigitalSignaturesSample.java and MySignatureHandler.java files accordingly.
+						<br>(2) The application is optimized to run on tablets, and will not run on handset devices.
+					</p>
 			</ul>
 						
 			
 		   <h1>How to Build with Eclipse</h1>
 		   It is convenient to build and debug an Android project using Google's ADT Plugin. The following steps brief how to build, say <a href="Samples/PDFViewCtrlDemo">PDFViewCtrlDemo</a>, using Eclipse with ADT.
 		   <ul>
-			   <li>Setup ADT in Eclipse as described in <a href="http://developer.android.com/sdk/installing.html"> this article</a>;
+			   <li>Setup ADT in Eclipse as described in <a href="http://developer.android.com/sdk/installing.html">this article</a>;
 			   <li>Copy the content from 'Lib' to the sample's 'libs' folder. Note that you can copy all the subfolders ('armeabi', 'armeabi-v7a' and 'x86') to make the output apk compatible on all platforms. 
 			   Android will load the proper library during installation. If you know which platform is targeted, you only need to copy one of them.
 			   <li>Go to “File -> New -> Projects…” and select “Android -> Android Project…”;
@@ -86,8 +92,15 @@
 			   <li>Select “Java Build Path -> Libraries”;
 			   <li>Click “Add Jars…” and browse to “PDFViewCtrlDemo/libs/” and select PDFNet.jar. You will do this again to select Tools.jar;
 		   </ul>
-		   Now, you are ready to build and run the project given that you have an Android device available. You can use either a <a href="http://developer.android.com/guide/developing/devices/index.html"> virtual device </a> or a <a href="http://developer.android.com/guide/developing/device.html"> hardware device</a>.
+		   Now, you are ready to build and run the project given that you have an Android device available. You can use either a <a href="http://developer.android.com/guide/developing/devices/index.html">virtual device</a> or a <a href="http://developer.android.com/guide/developing/device.html">hardware device</a>.
 		   
+		   <h1>Using ProGuard</h1>
+		   If you plan to use ProGuard on your APK before releasing your app, you will need to add to your proguard configuration file the following line:
+		   <ul>
+		       <li>-keep class pdftron.PDF.PDFViewCtrl$RenderCallback { *; }
+		   </ul>
+		   This will ensure that the native calls to the rendering callback will not be obfuscated.
+			  
            <h1>More Documentation</h1>
             <ul>
               <li>PDFNet What's New: <a href="http://www.pdftron.com/net/whatsnew.html">http://www.pdftron.com/pdfnet/whatsnew.html</a></li>
@@ -125,7 +138,7 @@
             <p>Thank you!</p>
             <br>
             <hr>
-            <p>Copyright (c) 2002-2012 by PDFTron Systems, Inc. All Rights Reserved. PDFTron, PDFNet SDK and PDF CosEdit are either trademarks 		and/or service marks and/or registered trademarks of PDFTron Systems Incorporated in Canada, United States and/or other countries.</p>
+            <p>Copyright (c) 2002-2013 by PDFTron Systems, Inc. All Rights Reserved. PDFTron, PDFNet SDK and PDF CosEdit are either trademarks and/or service marks and/or registered trademarks of PDFTron Systems Incorporated in Canada, United States and/or other countries.</p>
             </td>
         </tr>
       </table>	

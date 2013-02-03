@@ -103,7 +103,7 @@ public class PDFViewCtrlDemo extends Activity implements PDFViewCtrl.RenderingLi
 		 * misc PDFViewCtrl settings
 		 */
 		mPDFView.setPagePresentationMode(PDFViewCtrl.PAGE_PRESENTATION_SINGLE);	//set to single page mode; default is single continuous .
-		//mPDFView.setUseThumbView(true, false);								//use the thumbs from the input PDF file (more efficient).
+		//mPDFView.setUseThumbView(true, false, 0);								//use the thumbs from the input PDF file (more efficient).
 		//mPDFView.setProgressiveRendering(false);								//turn off progressive rendering.
 		//mPDFView.setImageSmoothing(true);										//turn on image smoothing (better quality, but more expensive).
 		mPDFView.setHighlightFields(true); 										//turn on form fields highlighting.

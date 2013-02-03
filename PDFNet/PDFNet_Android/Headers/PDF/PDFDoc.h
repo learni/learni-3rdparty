@@ -900,15 +900,33 @@ public:
 	 void Unlock();
 
 	/**
-	 * @return true if the document is locked for multi-threaded access, false otherwise.
-	 */
-	 bool IsLocked();
-	 
-	/**
 	 * Try locking the document, waiting no longer than specified number of milliseconds.
 	 * @return true if the document is locked for multi-threaded access, false otherwise.
 	 */
 	 bool TryLock( int milliseconds = 0 );
+
+	/**
+	 * Locks the document to prevent competing write threads (using Lock()) from accessing the document 
+	 * at the same time. Other reader threads however, will be allowed to access the document.
+	 * Threads attempting to obtain write access to the document will wait in 
+	 * suspended state until the thread that owns the lock calls doc.UnlockRead().
+	 * Note: To avoid deadlocks obtaining a write lock while holding
+	 * a read lock is not permitted and will throw an exception. If this situation is encountered
+	 * please either unlock the read lock before the write lock is obtained
+	 * or acquire a write lock (rather than read lock) in the first place.
+	 */
+	 void LockRead();
+
+	/**
+	 * Removes the read lock from the document. 
+	 */
+	 void UnlockRead();
+
+	/**
+	 * Tries to obtain a read lock the document for <milliseconds> duration, and returns 
+	 * true if the lock was successfully acquired
+	 */
+	 bool TryLockRead( int milliseconds = 0 );
 
 	 /**
 	  * @return The filename of the document if the document is loaded from disk, 

@@ -705,16 +705,25 @@ inline void PDFDoc::Unlock() {
 	REX(TRN_PDFDocUnlock(mp_doc));
 }
 
-inline bool PDFDoc::IsLocked() {
-	TRN_Bool result;
-	REX(TRN_PDFDocIsLocked(mp_doc,&result));
-	return TBToB(result);
+inline void PDFDoc::LockRead() {
+	REX(TRN_PDFDocLockRead(mp_doc));
+}
+
+inline void PDFDoc::UnlockRead() {
+	REX(TRN_PDFDocUnlockRead(mp_doc));
 }
 
 inline bool PDFDoc::TryLock( int milliseconds )
 {
 	TRN_Bool result;
 	REX(TRN_PDFDocTimedLock(mp_doc,milliseconds,&result));
+	return TBToB(result);
+}
+
+inline bool PDFDoc::TryLockRead( int milliseconds )
+{
+	TRN_Bool result;
+	REX(TRN_PDFDocTimedLockRead(mp_doc,milliseconds,&result));
 	return TBToB(result);
 }
 

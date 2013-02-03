@@ -41,60 +41,83 @@ inline SignatureHandler::~SignatureHandler()
 }
 #ifndef SWIGHIDDEN_SIG
 
-#define CREATE_PDFNETEX(message) pdftron::Common::Exception("Exception", __LINE__, __FILE__, __FUNCTION__, message)
+
+#define CREATE_PDFNETEX(message) std::runtime_error(message)
+#define CREATE_TRNEX(message) TRN_CreateException("false", __FILE__, __LINE__, __FUNCTION__, message)
 #define SIGAPI_BEX try{
-#define SIGAPI_EEX }catch(pdftron::Common::Exception& e){throw(e);}catch(std::exception& e){throw(CREATE_PDFNETEX(e.what()));}catch(std::string& e){throw (CREATE_PDFNETEX(e.c_str()));}catch(const char * e){throw(CREATE_PDFNETEX(e));}catch(...){throw(CREATE_PDFNETEX("Unknown exception"));}
+#define SIGAPI_EEX }catch(pdftron::Common::Exception& e){return(CREATE_TRNEX(e.GetMessage()));}catch(std::exception& e){return(CREATE_TRNEX(e.what()));}catch(...){return(CREATE_TRNEX("Unknown exception."));}
                     
-inline void TRN_SIGAPI SignatureHandler::TRN_SignatureHandlerGetNameImpl(TRN_UString* in_sighandler, void* derived)
+inline TRN_Exception TRN_SIGAPI SignatureHandler::TRN_SignatureHandlerGetNameImpl(TRN_UString* out_name, void* derived)
 {
     SIGAPI_BEX;
-    if (derived == NULL)
-        throw (pdftron::Common::Exception("derived == NULL", __LINE__, __FILE__, __FUNCTION__, "Failed to obtain derived instance of pdftron::SDF::SignatureHandler."));
+ 
+    if (derived == NULL) {
+        return (TRN_CreateException("derived == NULL", __FILE__, __LINE__, __FUNCTION__, "Failed to obtain derived instance of pdftron::SDF::SignatureHandler."));
+    }
 
-    if (in_sighandler == NULL)
-        return;
+    if (out_name != NULL) {
+        UString temp = ((SignatureHandler*) derived)->GetName();
+        REX(TRN_UStringCopy(temp.mp_impl, out_name));
+    }
 
-    UString temp = ((SignatureHandler*) derived)->GetName();
-    REX(TRN_UStringCopy(temp.mp_impl, in_sighandler));
+    return (NULL);
+
     SIGAPI_EEX;
 }
 
-inline void TRN_SIGAPI SignatureHandler::TRN_SignatureHandlerAppendDataImpl(const TRN_SignatureData in_data, void* derived)
+inline TRN_Exception TRN_SIGAPI SignatureHandler::TRN_SignatureHandlerAppendDataImpl(const TRN_SignatureData in_data, void* derived)
 {
     SIGAPI_BEX;
-    if (derived == NULL)
-        throw (pdftron::Common::Exception("derived == NULL", __LINE__, __FILE__, __FUNCTION__, "Failed to obtain derived instance of pdftron::SDF::SignatureHandler."));
+ 
+    if (derived == NULL) {
+        return (TRN_CreateException("derived == NULL", __FILE__, __LINE__, __FUNCTION__, "Failed to obtain derived instance of pdftron::SDF::SignatureHandler."));
+    }
 
     std::vector<UInt8> dataToAppend;
     dataToAppend.resize(in_data.length);
     memcpy(&(dataToAppend[0]), in_data.data, in_data.length);
     ((SignatureHandler*) derived)->AppendData(dataToAppend);
+
+    return (NULL);
+
     SIGAPI_EEX;
 }
 
-inline TRN_Bool TRN_SIGAPI SignatureHandler::TRN_SignatureHandlerResetImpl(void* derived)
+inline TRN_Exception TRN_SIGAPI SignatureHandler::TRN_SignatureHandlerResetImpl(TRN_Bool* out_result, void* derived)
 {
     SIGAPI_BEX;
-    if (derived == NULL)
-        throw (pdftron::Common::Exception("derived == NULL", __LINE__, __FILE__, __FUNCTION__, "Failed to obtain derived instance of pdftron::SDF::SignatureHandler."));
+ 
+    if (derived == NULL) {
+        return (TRN_CreateException("derived == NULL", __FILE__, __LINE__, __FUNCTION__, "Failed to obtain derived instance of pdftron::SDF::SignatureHandler."));
+    }
 
-    return (BToTB(((SignatureHandler*) derived)->Reset()));
-    SIGAPI_EEX;
-}
+    if (out_result != NULL) {
+        *out_result = (BToTB(((SignatureHandler*) derived)->Reset()));
+    }
 
-inline TRN_SignatureData TRN_SIGAPI SignatureHandler::TRN_SignatureHandlerCreateSignatureImpl(void* derived)
-{
-    SIGAPI_BEX;
-    if (derived == NULL)
-        throw (pdftron::Common::Exception("derived == NULL", __LINE__, __FILE__, __FUNCTION__, "Failed to obtain derived instance of pdftron::SDF::SignatureHandler."));
-
-    TRN_SignatureData result;
-    SignatureHandler* sig = ((SignatureHandler*) derived);
-    sig->m_signature_data = sig->CreateSignature();
+    return (NULL);
     
-    result.data = &(sig->m_signature_data[0]);
-    result.length = sig->m_signature_data.size();
-    return result;
+    SIGAPI_EEX;
+}
+
+inline TRN_Exception TRN_SIGAPI SignatureHandler::TRN_SignatureHandlerCreateSignatureImpl(TRN_SignatureData* out_signature, void* derived)
+{
+    SIGAPI_BEX;
+ 
+    if (derived == NULL) {
+        return (TRN_CreateException("derived == NULL", __FILE__, __LINE__, __FUNCTION__, "Failed to obtain derived instance of pdftron::SDF::SignatureHandler."));
+    }
+
+    if (out_signature != NULL) {
+        SignatureHandler* sig = ((SignatureHandler*) derived);
+        sig->m_signature_data = sig->CreateSignature();
+        
+        out_signature->data = &(sig->m_signature_data[0]);
+        out_signature->length = sig->m_signature_data.size();
+    }
+
+    return (NULL);
+
     SIGAPI_EEX;
 }
 /*
@@ -116,17 +139,21 @@ inline TRN_ValidateSignatureResult TRN_SIGAPI SignatureHandler::TRN_SignatureHan
     SIGAPI_EEX;
 }
 */
-inline void TRN_SIGAPI SignatureHandler::TRN_SignatureHandlerDestroyImpl(void* derived)
+inline TRN_Exception TRN_SIGAPI SignatureHandler::TRN_SignatureHandlerDestroyImpl(void* derived)
 {
 #ifndef SWIG
     // NOTE on SWIG:
     // we let the target language's garbage collector do the job instead (if we do this ourselves, there are seldom
     // crashes because GC is attempting to free invalid memory...
     SIGAPI_BEX;
+
     if (derived != NULL) {
         SignatureHandler* sh = (SignatureHandler*) derived;
         delete (sh);
     }
+
+    return (NULL);
+
     SIGAPI_EEX;
 #endif // SWIG
 }

@@ -97,9 +97,12 @@ TRN_API TRN_PDFDocCreateIndirectStream(TRN_PDFDoc doc, const char* data, const T
 TRN_API TRN_PDFDocGetSDFDoc (TRN_PDFDoc doc, TRN_SDFDoc* result);
 TRN_API TRN_PDFDocLock(TRN_PDFDoc doc);
 TRN_API TRN_PDFDocUnlock(TRN_PDFDoc doc);
-TRN_API TRN_PDFDocIsLocked(TRN_PDFDoc doc, TRN_Bool* result);
+TRN_API TRN_PDFDocLockRead(TRN_PDFDoc doc);
+TRN_API TRN_PDFDocUnlockRead(TRN_PDFDoc doc);
 TRN_API TRN_PDFDocTryLock( TRN_PDFDoc doc, TRN_Bool* result );
 TRN_API TRN_PDFDocTimedLock( TRN_PDFDoc doc, int milliseconds, TRN_Bool* result );
+TRN_API TRN_PDFDocTryLockRead( TRN_PDFDoc doc, TRN_Bool* result );
+TRN_API TRN_PDFDocTimedLockRead( TRN_PDFDoc doc, int milliseconds, TRN_Bool* result );
 TRN_API TRN_PDFDocAddHighlights(TRN_PDFDoc doc, const TRN_UString hilite);
 TRN_API TRN_PDFDocIsTagged(TRN_PDFDoc doc, TRN_Bool* result);
 TRN_API TRN_PDFDocHasSignatures(TRN_PDFDoc doc, TRN_Bool* result);

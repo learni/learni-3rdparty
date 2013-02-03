@@ -662,16 +662,25 @@ inline void SDFDoc::Unlock() {
 	REX(TRN_SDFDocUnlock(mp_doc));
 }
 
-inline bool SDFDoc::IsLocked() {
-	TRN_Bool result;
-	REX(TRN_SDFDocIsLocked(mp_doc,&result));
-	return TBToB(result);
-}
-
 inline bool SDFDoc::TryLock( int milliseconds )
 {
 	TRN_Bool result;
 	REX(TRN_SDFDocTimedLock(mp_doc,milliseconds,&result));
+	return TBToB(result);
+}
+
+inline void SDFDoc::LockRead() {
+	REX(TRN_SDFDocLockRead(mp_doc));
+}
+
+inline void SDFDoc::UnlockRead() {
+	REX(TRN_SDFDocUnlockRead(mp_doc));
+}
+
+inline bool SDFDoc::TryLockRead( int milliseconds )
+{
+	TRN_Bool result;
+	REX(TRN_SDFDocTimedLockRead(mp_doc,milliseconds,&result));
 	return TBToB(result);
 }
 

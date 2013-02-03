@@ -230,6 +230,24 @@ public:
 		 * @param generate if true links will be generated from urls
 		 */
 		void GenerateURLLinks(bool generate);
+
+		enum OverprintPreviewMode
+		{
+			e_op_off = 0,
+			e_op_on,
+			e_op_pdfx_on
+		};
+
+		/** 
+		 * Enable or disable support for overprint and overprint simulation. 
+		 * Overprint is a device dependent feature and the results will vary depending on 
+		 * the output color space and supported colorants (i.e. CMYK, CMYK+spot, RGB, etc). 
+		 * 
+		 * @default By default overprint is only enabled for PDF/X files.
+		 * 
+		 * @param op e_op_on: always enabled; e_op_off: always disabled; e_op_pdfx_on: enabled for PDF/X files only.
+		 */
+		void SetOverprint(OverprintPreviewMode mode);
 	protected:
 		TRN_Obj m_obj;
 		friend class Convert;
@@ -256,6 +274,14 @@ public:
 	class XODOutputOptions : public XPSOutputCommonOptions
 	{
 	public:
+
+		enum AnnotationOutputFlag {
+			e_internal_xfdf,				// include the annotation file in the XOD output. This is the default option
+			e_external_xfdf,				// output the annotation file externally to the same output path with extension .xfdf. 
+											// This is not available when using streaming conversion
+			e_flatten                      // flatten all annotations that are not link annotations
+		};
+
 		/**
 		 * Sets whether per page thumbnails should be included in the file
 		 * the default setting is to output thumbnails
@@ -313,6 +339,25 @@ public:
 		 * @param workaround if true rotated text will be changed to paths
 		 */
 		void SetSilverlightTextWorkaround(bool workaround);
+		
+		/**
+		 * Choose how to output annotations.
+		 * @param annot_output the flag to specify the output option
+		 */
+		void SetAnnotationOutput(enum AnnotationOutputFlag annot_output);
+		
+		/**
+		 * Output XOD as a collection of loose files rather than a zip archive. 
+		 * This option should be used when using the external part retriever in Webviewer.
+		 * @param generate if true XOD is output as a collection of loose files
+		 */
+		void SetExternalParts(bool generate);
+
+		/**
+		 * Encrypt XOD parts with AES 256 encryption using the supplied password.
+		 * @param pass the encryption password
+		 */
+		void SetEncryptPassword(const char* pass);
 	};
 
 	/**

@@ -93,11 +93,17 @@ extern "C" {
 
 	TRN_API TRN_SDFDocUnlock(TRN_SDFDoc doc);
 
-	TRN_API TRN_SDFDocIsLocked(TRN_SDFDoc doc, TRN_Bool* result);
+	TRN_API TRN_SDFDocLockRead(TRN_SDFDoc doc);
+
+	TRN_API TRN_SDFDocUnlockRead(TRN_SDFDoc doc);
 
 	TRN_API TRN_SDFDocTryLock( TRN_SDFDoc doc, TRN_Bool* result );
 
 	TRN_API TRN_SDFDocTimedLock( TRN_SDFDoc doc, int milliseconds, TRN_Bool* result );
+
+	TRN_API TRN_SDFDocTryLockRead( TRN_SDFDoc doc, TRN_Bool* result );
+
+	TRN_API TRN_SDFDocTimedLockRead( TRN_SDFDoc doc, int milliseconds, TRN_Bool* result );
 
 	TRN_API TRN_SDFDocGetFileName(TRN_SDFDoc doc, TRN_UString* result);
 

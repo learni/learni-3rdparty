@@ -17,15 +17,14 @@ extern "C" {
  */
 
 /**
- * 
  * Pre-condition: out_name must be initialized.
  */
-typedef void (TRN_SIGAPI *TRN_SignatureHandlerGetNameFunction)(TRN_UString* name, void* unused);
-typedef void (TRN_SIGAPI *TRN_SignatureHandlerAppendDataFunction)(const TRN_SignatureData data, void* unused);
-typedef TRN_Bool (TRN_SIGAPI *TRN_SignatureHandlerResetFunction)(void* unused);
-typedef TRN_SignatureData (TRN_SIGAPI *TRN_SignatureHandlerCreateSignatureFunction)(void* unused);
-//typedef TRN_ValidateSignatureResult (TRN_SIGAPI *TRN_SignatureHandlerValidateSignatureFunction)(TRN_Obj sig_dict, void* unused);
-typedef void (TRN_SIGAPI *TRN_SignatureHandlerDestructorFunction)(void* unused);
+typedef TRN_Exception (TRN_SIGAPI *TRN_SignatureHandlerGetNameFunction)(TRN_UString* name, void* unused);
+typedef TRN_Exception (TRN_SIGAPI *TRN_SignatureHandlerAppendDataFunction)(const TRN_SignatureData data, void* unused);
+typedef TRN_Exception (TRN_SIGAPI *TRN_SignatureHandlerResetFunction)(TRN_Bool* result, void* unused);
+typedef TRN_Exception (TRN_SIGAPI *TRN_SignatureHandlerCreateSignatureFunction)(TRN_SignatureData* signature, void* unused);
+//typedef TRN_Exception (TRN_SIGAPI *TRN_SignatureHandlerValidateSignatureFunction)(TRN_Obj sig_dict, TRN_ValidateSignatureResult* result, void* unused);
+typedef TRN_Exception (TRN_SIGAPI *TRN_SignatureHandlerDestructorFunction)(void* unused);
 
 TRN_API TRN_SignatureHandlerCreate(TRN_SignatureHandlerGetNameFunction get_name,
                                     TRN_SignatureHandlerAppendDataFunction append_data,

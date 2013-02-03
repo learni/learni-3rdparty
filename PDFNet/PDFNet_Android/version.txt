@@ -1,16 +1,22 @@
 
 CURRENT RELEASE
 
-**** Release Date: November, 30, 2012 ****
--- Version: 
-	5.9.1.16176
+**** Release Date: January, 23, 2013 ****
+-- Version:
+	5.9.3.16844
 -- Notes
+	* Fixed an issue that would prevent compiling with API 11 (Honeycomb).
+	* Added PDFNetSDKSampleDemo project, which showcases the API and includes several sample code files.
+	* Modified PDFViewCtrl.setUseThumbView() to allow user to set the thumbnail maximum side length.
+	* Fixed an issue of flickering when using PDFViewCtrl in different layout schemas, eg, RelativeLayout
+	  as a child of other layout group.
+	* Fixed an issue with alpha values for transparent images.
 	* Fixed an issue that on Android 16 (Jelly Bean 4.1), zooming might cause page change in single page mode. This
-		is caused by the new gesture dectector behavior on Android 16.
+	  is caused by the new gesture dectector behavior on Android 16.
 	* Added PDFNet.setViewerCache() and PDFViewCtrl.setViewerCache() to support fast rendering.
 	* Added PDFViewCtrl.setPageRefViewMode() and PDFViewCtrl.getPageRefViewMode() to control the page view/fit mode upon page change.
-    * Fixed an issue with the page indicator being drawn in a different position when sliding pages. This is caused
-        when the hardware acceleration is turned on in the manifest and the device is running Android >= ICS.
+	* Fixed an issue with the page indicator being drawn in a different position when sliding pages. This is caused
+	  when the hardware acceleration is turned on in the manifest and the device is running Android >= ICS.
 	
 	
 
@@ -18,11 +24,11 @@ CURRENT RELEASE
 OLD RELEASES
 
 **** Release Date: November, 8, 2012 ****
--- Version: 
+-- Version:
 	5.9.0.15913
 -- Notes
 	* Added support for x86 architecture. Note that currently it has only been tested on Android 4.1 (API 16).
-    * Added support for right-to-left language in TextExtrator.
+	* Added support for right-to-left language in TextExtrator.
 	* Fixed a bug that might cause occasional crashes on Android 4.0 and above.
 	* New Digital Signature API.
 	* Added support for using cache file for PDFViewCtrl.openURL().
@@ -37,7 +43,7 @@ OLD RELEASES
 -- Version: 
 	5.8.2.14916
 -- Notes
-    * Added PDFViewCtrl.setTool() to set the current tool used by PDFViewCtrl without going through the ToolManager interface.
+	* Added PDFViewCtrl.setTool() to set the current tool used by PDFViewCtrl without going through the ToolManager interface.
 	* Added PDFViewCtrl.update(boolean) to allow update all the rendered regions, not just the visible region.
 	* Added PDFViewCtrl.setRightToLeftLanguage(boolean) to support right-2-left languages.
 	* Added PDFViewCtrl.getPageSlidingCanvasTransform().
@@ -50,12 +56,12 @@ OLD RELEASES
 
 
 **** Release Date: June, 19, 2012 ****
--- Core Version: 
+-- Core Version:
 	5.8.1.14214
--- SDK Version: 
+-- SDK Version:
 	1.2.14214
 -- Notes
-    * Fixed an issue that panning might cause drifting: starting finger position on the page is different from ending finger position on the page.
+	* Fixed an issue that panning might cause drifting: starting finger position on the page is different from ending finger position on the page.
 	* Added support for simultaneous panning and zooming.
 	* Fixed a glitch in loading native PDFNet library related to the bug in ICS.
 	* Added PDFViewCtrl.setCurrentPage() to be consistent with PDFNet APIs on other platforms, and deprecated PDFViewCtrl.gotoPage().
@@ -64,13 +70,13 @@ OLD RELEASES
 	
 
 **** Release Date: May, 29, 2012 ****
--- Core Version: 
+-- Core Version:
 	5.8.0.13964
--- SDK Version: 
+-- SDK Version:
 	1.2.13964
 -- Notes
-    * Added TextExtractor.getTextUnderAnnot() function and added the example usage in Tools.jar.
-    * Added PDFViewCtrl.setZoom(double zoom, boolean use_snapshot) and PDFViewCtrl.setZoom(int x, int y, double zoom, boolean use_snapshot) methods. Also
+	* Added TextExtractor.getTextUnderAnnot() function and added the example usage in Tools.jar.
+	* Added PDFViewCtrl.setZoom(double zoom, boolean use_snapshot) and PDFViewCtrl.setZoom(int x, int y, double zoom, boolean use_snapshot) methods. Also
 	  added the sample code in Tools.jar (Tool.onDoubleTap()) to show how to customize PDFViewCtrl's onDoubleTap behavior.
 	* Added PDFViewCtrl.RenderingListener interface and PDFViewCtrl.setRenderingListener() to listen to start and end rendering events. Also added sample
 	  code in PDFViewCtrlDemo to show how to use them to show a spinner while PDFViewCtrl is rendering.
@@ -82,21 +88,21 @@ OLD RELEASES
 	
 
 **** Release Date: April, 18, 2012 ****
--- Core Version: 
+-- Core Version:
 	5.8.0.13628
--- SDK Version: 
+-- SDK Version:
 	1.2.13628
 -- Notes
-    * Fixed a bug in security handler (handling).
-    * Modified sticky note creation so that the content dialog is opened immediately after the sticky is created.
-    * When a text annotation is selected, its bounding box is highlighted.
-    * Removed PDFViewCtrl.getAppliedCanvasTransform() and changed Tool.onDraw(Canvas) to Tool.onDraw(Canvas, Matrix).
+	* Fixed a bug in security handler (handling).
+	* Modified sticky note creation so that the content dialog is opened immediately after the sticky is created.
+	* When a text annotation is selected, its bounding box is highlighted.
+	* Removed PDFViewCtrl.getAppliedCanvasTransform() and changed Tool.onDraw(Canvas) to Tool.onDraw(Canvas, Matrix).
 	
 
 **** Release Date: April, 05, 2012 ****
--- Core Version: 
+-- Core Version:
 	5.8.0.13559
--- SDK Version: 
+-- SDK Version:
 	1.2.13559
 -- Notes
 	* Added PDFViewCtrl.openURL() for supporting incremental downloading/viewing.

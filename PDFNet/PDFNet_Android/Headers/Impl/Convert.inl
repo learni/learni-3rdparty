@@ -103,6 +103,24 @@ inline void Convert::XPSOutputCommonOptions::GenerateURLLinks(bool generate)
 	REX(TRN_ObjPutBool(m_obj,"URL_LINKS",BToTB(generate),&result));
 }
 
+inline void Convert::XPSOutputCommonOptions::SetOverprint(enum OverprintPreviewMode mode)
+{
+	TRN_Obj result;
+	switch (mode)
+	{
+	case e_op_off:
+		REX(TRN_ObjPutName(m_obj, "OVERPRINT_MODE", "OFF", &result));
+		break;
+	case e_op_on:
+		REX(TRN_ObjPutName(m_obj, "OVERPRINT_MODE", "ON", &result));
+		break;
+	case e_op_pdfx_on:
+		REX(TRN_ObjPutName(m_obj, "OVERPRINT_MODE", "PDFX", &result));
+		break;
+	}
+	
+}
+
 inline void Convert::XPSOutputOptions::SetOpenXps(bool openxps)
 {
 	TRN_Obj result;
@@ -155,6 +173,35 @@ inline void Convert::XODOutputOptions::SetSilverlightTextWorkaround(bool workaro
 {
 	TRN_Obj result;
 	REX(TRN_ObjPutBool(m_obj,"REMOVE_ROTATED_TEXT",workaround,&result));
+}
+
+inline void Convert::XODOutputOptions::SetAnnotationOutput(enum AnnotationOutputFlag annot_output)
+{
+	TRN_Obj result;
+	switch (annot_output)
+	{
+		case e_internal_xfdf:
+			REX(TRN_ObjPutName(m_obj, "ANNOTATION_OUTPUT", "INTERNAL", &result));
+			break;
+		case e_external_xfdf:
+			REX(TRN_ObjPutName(m_obj, "ANNOTATION_OUTPUT", "EXTERNAL", &result));
+			break;
+		case e_flatten:
+			REX(TRN_ObjPutName(m_obj, "ANNOTATION_OUTPUT", "FLATTEN", &result));
+			break;
+	}
+}
+
+inline void Convert::XODOutputOptions::SetExternalParts(bool generate)
+{
+	TRN_Obj result;
+	REX(TRN_ObjPutBool(m_obj, "EXTERNAL_PARTS", generate, &result));
+}
+
+inline void Convert::XODOutputOptions::SetEncryptPassword(const char* pass)
+{
+	TRN_Obj result;
+	REX(TRN_ObjPutName(m_obj, "ENCRYPT_PASSWORD", pass, &result));
 }
 
 inline void Convert::ToXps( PDFDoc & in_pdfdoc, const UString & in_filename, const Convert::XPSOutputOptions& options)

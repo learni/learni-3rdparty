@@ -16,6 +16,32 @@
 namespace pdftron { 
 	namespace PDF {
 
+/** DownloadedType lists the events triggered by calling OpenURLAsync. */
+enum DownloadedType
+{
+	/** A new page has been downloaded. */
+	e_downloadedtype_page = 0,
+	/** A thumbnail has been downloaded. */
+	e_downloadedtype_thumb,
+	/** The named destinations have been downloaded. These may be necessary for link activation. */
+	e_downloadedtype_named_dests,
+	/** The document outline (bookmarks) has been downloaded. */
+	e_downloadedtype_outline,
+	/** The entire document has been downloaded. */
+	e_downloadedtype_finished,
+	/** An error has occurred while downloading and downloading has stopped. */
+	e_downloadedtype_failed,
+	/** The initial document information is available and it is now ok to query for document information. */
+	e_downloadedtype_opened
+};
+
+/** 
+ * Download event handling.
+ * A type of callback function (or a delegate in .NET terminology) that is called
+ * during download events triggered by calling OpenURLAsync.
+ */
+typedef void (*DownloadReportHandler) (DownloadedType type, PDFDoc* doc, int page_num, int obj_num, const char* message, void* data);
+
 /** 
  * PDFRasterizer is a low-level PDF rasterizer.
  * 

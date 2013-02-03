@@ -12,6 +12,18 @@ extern "C" {
 
 #include <C/Common/TRN_Types.h>
 
+enum TRN_PDFViewDownloadedType
+{
+	e_downloadedtype_page = 0,
+	e_downloadedtype_thumb,
+	e_downloadedtype_named_dests,
+	e_downloadedtype_outline,
+	e_downloadedtype_finished,
+	e_downloadedtype_failed,
+	e_downloadedtype_opened
+};
+
+typedef void (*TRN_PDFViewPartDownloadedProc) (enum TRN_PDFViewDownloadedType type, TRN_PDFDoc doc, int page_num, int obj_num, const char* msg, void* user_data);
 
 enum TRN_PDFRasterizerType {
 	e_PDFRasterizer_BuiltIn,  
