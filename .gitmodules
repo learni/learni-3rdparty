@@ -4,3 +4,6 @@
 [submodule "boto"]
 	path = boto
 	url = git@bitbucket.org:Lior/boto.git
+[submodule "python-readability"]
+	path = python-readability
+	url = https://github.com/buriy/python-readability.git
