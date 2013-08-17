@@ -6,4 +6,4 @@
 	url = git@bitbucket.org:Lior/boto.git
 [submodule "python-readability"]
 	path = python-readability
-	url = https://github.com/buriy/python-readability.git
+url=https://github.com/nimast/python-readability.git
