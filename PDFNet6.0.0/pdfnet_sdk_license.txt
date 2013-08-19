@@ -1,0 +1,18 @@
+------------------------------------
+PDFNet SDK Registration Information:
+------------------------------------
+
+Company: Bligear Ltd.(learni.net)
+Contact: Uri Kaplan
+License Model: OEM Redistributable License 
+License Type: PDFNet Core Mobile SDK 
+Application Name: Learni
+Platform(s): iOS,Android
+AMS (Annual Maintenance Subscription): 06/11/2014 (Jun 11, 2014)
+License Key: 
+Bligear Ltd.(learni.net):OEM:Learni::IA:AMS(20140611):3E0AACCAE7665023C8DEB62F4E6F7FC700C5CAD504351B5AE528A60ABAB6F5C7
+
+------------------------------------
+To register the Software simply copy the entire License Key (as specified above) and paste it as the parameter in the call to PDFNet.Initialize().
+For example: PDFNet.Initialize("Bligear Ltd.(learni.net):OEM:Learni::IA:AMS(20140611):3E0AACCAE7665023C8DEB62F4E6F7FC700C5CAD504351B5AE528A60ABAB6F5C7");
+Note: Please make sure that the License Key is specified on a single line.

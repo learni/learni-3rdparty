@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2012 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2013 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 
@@ -10,8 +10,10 @@ import java.util.LinkedList;
 import pdftron.PDF.Annot;
 import pdftron.PDF.PDFDoc;
 import pdftron.PDF.PDFViewCtrl;
+import pdftron.PDF.PDFViewCtrl.LinkInfo;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -19,6 +21,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.net.Uri;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
@@ -86,6 +89,7 @@ class Pan extends Tool{
 		mMenuTitles.add("Rectangle");
 		mMenuTitles.add("Oval");
 		mMenuTitles.add("Freehand");
+		mMenuTitles.add("Free Text");
 		mMenuTitles.add("Sticky Note");
 	}
 	
@@ -114,7 +118,7 @@ class Pan extends Tool{
 		
 		if ( mAnnot != null ) {
 			try {
-				mPDFView.lockDoc(true);
+				mPDFView.lockReadDoc();
 				if ( mAnnot.getType() == Annot.e_Link ) {
 					//link navigation
 					mNextToolMode = ToolManager.e_link_action;
@@ -132,23 +136,43 @@ class Pan extends Tool{
 			catch (Exception ex) {
 			}
 			finally {
-				mPDFView.unlockDoc();
+				mPDFView.unlockReadDoc();
 			}
-		}
-		else {
+		} else {
 			mNextToolMode = ToolManager.e_pan;
 			
-			//show top/bottom tool bar, if not just switched from another tool
-			if ( !mJustSwitchedFromAnotherTool ) {
-				float height = mPDFView.getHeight();
-				float thresh =  height / 4;
-				if ( y <= thresh ) {
-					//clicked the top quarter, show top too lbar. 
-					mTopToolbar.show();
+			LinkInfo linkInfo = mPDFView.getLinkAt(x,  y);
+			if (linkInfo != null) {
+				try {
+					String url = linkInfo.getURL();
+					if (android.util.Patterns.EMAIL_ADDRESS.matcher(url).matches()) {
+						Intent i = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto", url, null));
+						mPDFView.getContext().startActivity(Intent.createChooser(i, "Send email..."));
+					} else {
+						// ACTION_VIEW needs the address to have http or https
+						if (!url.startsWith("https://") && !url.startsWith("http://")){
+							url = "http://" + url;
+						}
+						Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+						mPDFView.getContext().startActivity(Intent.createChooser(i, "Open with..."));
+					}
+				} catch (Exception ex) {
+					//Log.v("PDFNet", ex.getMessage());
 				}
-				else if ( y >= height - thresh ) {
-					//clicked the bottom quarter, show bottom too lbar.
-					mBottomToolbar.show();
+			} else {
+			
+				//show top/bottom tool bar, if not just switched from another tool
+				if ( !mJustSwitchedFromAnotherTool ) {
+					float height = mPDFView.getHeight();
+					float thresh =  height / 4;
+					if ( y <= thresh ) {
+						//clicked the top quarter, show top too lbar. 
+						mTopToolbar.show();
+					}
+					else if ( y >= height - thresh ) {
+						//clicked the bottom quarter, show bottom too lbar.
+						mBottomToolbar.show();
+					}
 				}
 			}
 		}
@@ -187,7 +211,7 @@ class Pan extends Tool{
 		selectAnnot(x, y);
 		
 		try {
-			mPDFView.lockDoc(true);
+			mPDFView.lockReadDoc();
 			
 			//if hit a link, do the link action
 			if ( mAnnot != null && mAnnot.getType() == Annot.e_Link ) {
@@ -198,13 +222,8 @@ class Pan extends Tool{
 				boolean is_form = mAnnot == null ? false : mAnnot.getType() == Annot.e_Widget;
 				
 				//if hit text, run text select tool
-				float x1 = e.getX();
-				float y1 = e.getY();
-				x1 = x1 >=0.5f ? x1 - 0.5f : 0;
-				y1 = y1 >=0.5f ? y1 - 0.5f : 0;
-				float x2 = x1 + 1;
-				float y2 = y1 + 1;
-				if ( !is_form && mPDFView.selectByRect(x1, y1, x2, y2) ) {
+				RectF textSelectRect = getTextSelectRect(e.getX(), e.getY());
+				if ( !is_form && mPDFView.selectByRect(textSelectRect.left, textSelectRect.top, textSelectRect.right, textSelectRect.bottom) ) {
 					mNextToolMode = ToolManager.e_text_select;
 				}
 				
@@ -231,7 +250,7 @@ class Pan extends Tool{
 		catch (Exception e1) {				
 		}
 		finally {
-			mPDFView.unlockDoc();
+			mPDFView.unlockReadDoc();
 		}
 		
 		mJustSwitchedFromAnotherTool = false;
@@ -293,6 +312,8 @@ class Pan extends Tool{
 			mNextToolMode = ToolManager.e_oval_create;
 		} else if ( str.equals("freehand") ) {
 			mNextToolMode = ToolManager.e_ink_create;
+		} else if ( str.equals("free text") ) {
+	        mNextToolMode = ToolManager.e_text_create;
 		} else if ( str.equals("sticky note") ) {
 			mNextToolMode = ToolManager.e_text_annot_create;
 		}
@@ -305,7 +326,7 @@ class Pan extends Tool{
 		
 		mPDFView.cancelFindText(); //since find text locks the document, cancel it to release the document.
 		try {
-			mPDFView.lockDoc(true);
+			mPDFView.lockReadDoc();
 			Annot a = mPDFView.getAnnotationAt(x, y);
 			if ( a != null && a.isValid() ) {
 				mAnnot = a;
@@ -315,7 +336,7 @@ class Pan extends Tool{
 		catch (Exception e1) {
 		}	
 		finally {
-			mPDFView.unlockDoc();
+			mPDFView.unlockReadDoc();
 		}
 	}
 	
@@ -576,31 +597,11 @@ class Pan extends Tool{
 		}
 		
 		void findText() {
-			boolean threaded_search = true;
 			mSelPath.reset();
 			String str = mSearchText.getText().toString();
 			str = str.trim();
 			if ( str.length() > 0 ) {
-				if ( threaded_search ) {
-					//search in a separate thread to avoid blocking UI.
-					mPDFView.findText(str, mMatchCase, mMatchWholeWord, !mForward, mUseRegex, this);
-				}
-				else {
-					//search in UI thread
-					int result = mPDFView.findText(str, mMatchCase, mMatchWholeWord, !mForward, mUseRegex, null);
-					makeSearchResult(result);
-					if ( result == PDFViewCtrl.TEXT_SEARCH_FOUND ) {
-						//hide soft keyboard just in case it blocks the found result
-						InputMethodManager imm = (InputMethodManager)mPDFView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-						imm.hideSoftInputFromWindow(mSearchText.getWindowToken(), 0);
-						showTransientPageNumber();
-					}
-					else if ( result == PDFViewCtrl.TEXT_SEARCH_INVALID_INPUT ) {
-						Toast t = Toast.makeText(mPDFView.getContext(), "Invalid search string.", Toast.LENGTH_SHORT);
-						t.setGravity(Gravity.CENTER, 0, 0);
-						t.show();
-					}
-				}
+			    mPDFView.findText(str, mMatchCase, mMatchWholeWord, !mForward, mUseRegex, this);
 			}
 		}
 		
@@ -672,7 +673,7 @@ class Pan extends Tool{
 		
 		
 		public void onTextSearchEnd(int result) {
-			if ( result == PDFViewCtrl.TEXT_SEARCH_FOUND ) {
+		    if ( result == PDFViewCtrl.TEXT_SEARCH_FOUND ) {
 				//hide soft keyboard just in it blocks the found result.
 				InputMethodManager imm = (InputMethodManager)mPDFView.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(mSearchText.getWindowToken(), 0);

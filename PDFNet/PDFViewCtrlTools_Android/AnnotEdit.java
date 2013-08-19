@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2012 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2013 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 
@@ -11,8 +11,10 @@ import pdftron.PDF.Annot;
 import pdftron.PDF.ColorPt;
 import pdftron.PDF.PDFViewCtrl;
 import pdftron.PDF.Page;
+import pdftron.PDF.Annots.FreeText;
 import pdftron.PDF.Annots.Markup;
 import pdftron.PDF.Annots.Popup;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -42,6 +44,7 @@ class AnnotEdit extends Tool {
 	private boolean mCtrlPtsSet;
 	private boolean mAnnotIsSticky;
 	private boolean mAnnotIsTextMarkup;
+	private boolean mAnnotIsFreeText;
 	private boolean mScaled;
 	private Paint mPaint;
 	private boolean mUpFromStickyCreate;
@@ -81,6 +84,7 @@ class AnnotEdit extends Tool {
 		mCtrlPtsSet = false;
 		mAnnotIsSticky = false;
 		mAnnotIsTextMarkup = false;
+		mAnnotIsFreeText = false;
 		mScaled = false;
 		mUpFromStickyCreate = false;
 		mUpFromStickyCreateDlgShown = false;
@@ -94,9 +98,10 @@ class AnnotEdit extends Tool {
 		if ( mAnnot != null ) {
 			try {
 				//locks the document first as accessing annotation/doc information isn't thread safe.
-				mPDFView.lockDoc(true);
+				mPDFView.lockReadDoc();
 				
 				mAnnotIsSticky = (mAnnot.getType() == Annot.e_Text);
+				mAnnotIsFreeText = (mAnnot.getType() == Annot.e_FreeText);
 				mAnnotIsTextMarkup = (mAnnot.getType() == Annot.e_Highlight ||
 									  mAnnot.getType() == Annot.e_Underline ||
 									  mAnnot.getType() == Annot.e_StrikeOut ||
@@ -112,9 +117,14 @@ class AnnotEdit extends Tool {
 				if (type == Annot.e_Line || type == Annot.e_Square ||
 					type == Annot.e_Circle || type == Annot.e_Polygon || type == Annot.e_Ink || type == Annot.e_Polyline ||
 					type == Annot.e_Underline || type == Annot.e_Squiggly || type == Annot.e_StrikeOut ||
-					type == Annot.e_Highlight || type == Annot.e_Text) {
-					mMenuTitles.add("Color");
-					if ( type != Annot.e_Highlight && type != Annot.e_Text ) {
+					type == Annot.e_Highlight || type == Annot.e_Text || type == Annot.e_FreeText) {
+				    if (mAnnotIsFreeText) {
+                        mMenuTitles.add("Text Color");
+                        mMenuTitles.add("Text Size");
+                    } else {
+                        mMenuTitles.add("Color");
+                    }
+					if ( type != Annot.e_Highlight && type != Annot.e_Text && type != Annot.e_FreeText ) {
 						mMenuTitles.add("Thickness");
 					}
 				}
@@ -132,7 +142,7 @@ class AnnotEdit extends Tool {
 			catch (Exception e) {
 			}
 			finally {
-				mPDFView.unlockDoc();
+				mPDFView.unlockReadDoc();
 			}
 		}
 	}
@@ -146,7 +156,6 @@ class AnnotEdit extends Tool {
 	public void setUpFromStickyCreate(boolean flag) {
 		mUpFromStickyCreate = flag;
 	}
-	
 	
 	/**
 	 * This functions sets the positions of the eight control points based on
@@ -163,39 +172,98 @@ class AnnotEdit extends Tool {
 		float sx = mPDFView.getScrollX();
 		float sy = mPDFView.getScrollY();
 
+		//compute the control points. in case that the page is rotated, have to 
+		//ensure the control points are properly positioned.
+		float min_x = 0, max_x = 0;
+		float min_y = 0, max_y = 0;
+		float x, y;
+		
 		double[] pts = new double[2];
 		pts = mPDFView.convPagePtToClientPt(x1, y2, mAnnotPageNum);
-		mCtrlPts[e_ll].x = (float) pts[0] + sx;
-		mCtrlPts[e_ll].y = (float) pts[1] + sy;
+		min_x = max_x = (float) pts[0] + sx;
+		min_y = max_y = (float) pts[1] + sy;
 
 		pts = mPDFView.convPagePtToClientPt((x1 + x2) / 2, y2, mAnnotPageNum);
-		mCtrlPts[e_lm].x = (float) pts[0] + sx;
-		mCtrlPts[e_lm].y = (float) pts[1] + sy;
+		x = (float) pts[0] + sx;
+		y = (float) pts[1] + sy;
+		min_x = Math.min(x,  min_x);
+		max_x = Math.max(x,  max_x);
+		min_y = Math.min(y,  min_y);
+		max_y = Math.max(y,  max_y);
 
 		pts = mPDFView.convPagePtToClientPt(x2, y2, mAnnotPageNum);
-		mCtrlPts[e_lr].x = (float) pts[0] + sx;
-		mCtrlPts[e_lr].y = (float) pts[1] + sy;
+		x = (float) pts[0] + sx;
+		y = (float) pts[1] + sy;
+		min_x = Math.min(x,  min_x);
+		max_x = Math.max(x,  max_x);
+		min_y = Math.min(y,  min_y);
+		max_y = Math.max(y,  max_y);
 
 		pts = mPDFView.convPagePtToClientPt(x2, (y1 + y2) / 2, mAnnotPageNum);
-		mCtrlPts[e_mr].x = (float) pts[0] + sx;
-		mCtrlPts[e_mr].y = (float) pts[1] + sy;
+		x = (float) pts[0] + sx;
+		y = (float) pts[1] + sy;
+		min_x = Math.min(x,  min_x);
+		max_x = Math.max(x,  max_x);
+		min_y = Math.min(y,  min_y);
+		max_y = Math.max(y,  max_y);
 
 		pts = mPDFView.convPagePtToClientPt(x2, y1, mAnnotPageNum);
-		mCtrlPts[e_ur].x = (float) pts[0] + sx;
-		mCtrlPts[e_ur].y = (float) pts[1] + sy;
+		x = (float) pts[0] + sx;
+		y = (float) pts[1] + sy;
+		min_x = Math.min(x,  min_x);
+		max_x = Math.max(x,  max_x);
+		min_y = Math.min(y,  min_y);
+		max_y = Math.max(y,  max_y);
 
 		pts = mPDFView.convPagePtToClientPt((x1 + x2) / 2, y1, mAnnotPageNum);
-		mCtrlPts[e_um].x = (float) pts[0] + sx;
-		mCtrlPts[e_um].y = (float) pts[1] + sy;
+		x = (float) pts[0] + sx;
+		y = (float) pts[1] + sy;
+		min_x = Math.min(x,  min_x);
+		max_x = Math.max(x,  max_x);
+		min_y = Math.min(y,  min_y);
+		max_y = Math.max(y,  max_y);
 
 		pts = mPDFView.convPagePtToClientPt(x1, y1, mAnnotPageNum);
-		mCtrlPts[e_ul].x = (float) pts[0] + sx;
-		mCtrlPts[e_ul].y = (float) pts[1] + sy;
+		x = (float) pts[0] + sx;
+		y = (float) pts[1] + sy;
+		min_x = Math.min(x,  min_x);
+		max_x = Math.max(x,  max_x);
+		min_y = Math.min(y,  min_y);
+		max_y = Math.max(y,  max_y);
 
 		pts = mPDFView.convPagePtToClientPt(x1, (y1 + y2) / 2, mAnnotPageNum);
-		mCtrlPts[e_ml].x = (float) pts[0] + sx;
-		mCtrlPts[e_ml].y = (float) pts[1] + sy;
+		x = (float) pts[0] + sx;
+		y = (float) pts[1] + sy;
+		min_x = Math.min(x,  min_x);
+		max_x = Math.max(x,  max_x);
+		min_y = Math.min(y,  min_y);
+		max_y = Math.max(y,  max_y);
+		
+		mCtrlPts[e_ll].x = min_x;
+		mCtrlPts[e_ll].y = max_y;
 
+		mCtrlPts[e_lm].x = (min_x + max_x)/2.0f;
+		mCtrlPts[e_lm].y = max_y;
+
+		mCtrlPts[e_lr].x = max_x;
+		mCtrlPts[e_lr].y = max_y;
+
+		mCtrlPts[e_mr].x = max_x;
+		mCtrlPts[e_mr].y = (min_y + max_y)/2.0f;
+
+		mCtrlPts[e_ur].x = max_x;
+		mCtrlPts[e_ur].y = min_y;
+
+		mCtrlPts[e_um].x = (min_x + max_x)/2.0f;
+		mCtrlPts[e_um].y = min_y;
+
+		mCtrlPts[e_ul].x = min_x;
+		mCtrlPts[e_ul].y = min_y;
+
+		mCtrlPts[e_ml].x = min_x;
+		mCtrlPts[e_ml].y = (min_y + max_y)/2.0f;
+
+		//compute the bounding box
 		mBBox.left = mCtrlPts[e_ul].x - mCtrlRadius;
 		mBBox.top = mCtrlPts[e_ul].y - mCtrlRadius;
 		mBBox.right = mCtrlPts[e_lr].x + mCtrlRadius;
@@ -315,7 +383,7 @@ class AnnotEdit extends Tool {
 				}
 				
 				//change the color of the annotation
-				else if ( str.equals("color")) {
+				else if ( str.equals("color") || str.equals("text color")) {
 					boolean is_markup = mAnnot.isMarkup();
 					mNextToolMode = ToolManager.e_annot_edit;
 					int r = 255, g = 255, b = 255, a = 255;
@@ -343,11 +411,16 @@ class AnnotEdit extends Tool {
 								//locks the document first as accessing annotation/doc information isn't thread safe.
 								mPDFView.lockDoc(true);
 								ColorPt color = new ColorPt(r, g, b);
-								mAnnot.setColor(color, 3);
-								if ( mAnnot.isMarkup() ) {
-									Markup m = new Markup(mAnnot);
-									m.setOpacity(a);
-								}
+								if (mAnnotIsFreeText) {
+                                    FreeText freeText = new FreeText(mAnnot);
+                                    freeText.setTextColor(color, 3);
+                                } else {
+                                    mAnnot.setColor(color, 3);
+                                    if ( mAnnot.isMarkup() ) {
+                                        Markup m = new Markup(mAnnot);
+                                        m.setOpacity(a);
+                                    }
+                                }
 								mAnnot.refreshAppearance();
 								mPDFView.update(mAnnot, mAnnotPageNum);
 							}
@@ -359,7 +432,11 @@ class AnnotEdit extends Tool {
 							
 							SharedPreferences settings = mPDFView.getContext().getSharedPreferences(Tool.PREFS_FILE_NAME, 0);
 						    SharedPreferences.Editor editor = settings.edit();
-						    editor.putInt("annotation_creation_color", c);
+						    if (mAnnotIsFreeText) {
+						        editor.putInt("annotation_freetext_creation_color", c);
+						    } else {
+						        editor.putInt("annotation_creation_color", c);
+						    }
 						    editor.commit();
 						    
 							showMenu(mMenuTitles, getAnnotRect());
@@ -377,43 +454,115 @@ class AnnotEdit extends Tool {
 				
 				//add note to the annotation
 				else if ( str.equals("note") ) {
-					Markup m = new Markup(mAnnot);
-					Popup tp = m.getPopup();
-					if ( tp == null || !tp.isValid() ) { 
-						tp = Popup.create(mPDFView.getDoc(), mAnnot.getRect());
-						m.setPopup(tp);
-					}
-					final Popup p = tp;
-					final DialogAnnotNote d = new DialogAnnotNote(mPDFView.getContext(), p.getContents());
-					d.setButton("OK", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
-							try {
-								//locks the document first as accessing annotation/doc information isn't thread safe.
-								mPDFView.lockDoc(true);
-								p.setContents(d.getNote());
-							} 
-							catch (Exception e) {
-							}
-							finally {
-								mPDFView.unlockDoc();
-							}
-							showMenu(mMenuTitles, getAnnotRect());
-						}
-					});
-	
-					
-					d.setButton2("Cancel", new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int which) {
-							showMenu(mMenuTitles, getAnnotRect());
-						}
-					});
-	
-					d.show();
+				    
+				    if (mAnnotIsFreeText) {
+				        final Markup m = new Markup(mAnnot);
+                        final DialogAnnotNote d = new DialogAnnotNote(mPDFView.getContext(), m.getContents());
+                        d.setButton(AlertDialog.BUTTON_POSITIVE, "OK", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                try {
+                                    //locks the document first as accessing annotation/doc information isn't thread safe.
+                                    mPDFView.lockDoc(true);
+                                    m.setContents(d.getNote());
+
+                                    mAnnot.refreshAppearance();
+                                    mPDFView.update(mAnnot, mAnnotPageNum);
+                                } 
+                                catch (Exception e) {
+                                }
+                                finally {
+                                    mPDFView.unlockDoc();
+                                }
+                                showMenu(mMenuTitles, getAnnotRect());
+                            }
+                        });
+
+                        d.setButton(AlertDialog.BUTTON_NEGATIVE, "Cancel", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                showMenu(mMenuTitles, getAnnotRect());
+                            }
+                        });
+
+                        d.show();
+
+				    } else {
+    					Markup m = new Markup(mAnnot);
+    					Popup tp = m.getPopup();
+    					if ( tp == null || !tp.isValid() ) { 
+    						tp = Popup.create(mPDFView.getDoc(), mAnnot.getRect());
+    						m.setPopup(tp);
+    					}
+    					final Popup p = tp;
+    					final DialogAnnotNote d = new DialogAnnotNote(mPDFView.getContext(), p.getContents());
+    					d.setButton("OK", new DialogInterface.OnClickListener() {
+    						public void onClick(DialogInterface dialog, int which) {
+    							try {
+    								//locks the document first as accessing annotation/doc information isn't thread safe.
+    								mPDFView.lockDoc(true);
+    								p.setContents(d.getNote());
+    							} 
+    							catch (Exception e) {
+    							}
+    							finally {
+    								mPDFView.unlockDoc();
+    							}
+    							showMenu(mMenuTitles, getAnnotRect());
+    						}
+    					});
+    	
+    					
+    					d.setButton2("Cancel", new DialogInterface.OnClickListener() {
+    						public void onClick(DialogInterface dialog, int which) {
+    							showMenu(mMenuTitles, getAnnotRect());
+    						}
+    					});
+    	
+    					d.show();
+				    }
 				}
+				
+				// change the size of the font in free text
+                else if (str.equals("text size")) {
+                    LinkedList<String> pt_values = new LinkedList<String>();
+                    pt_values.add("8");
+                    pt_values.add("11");
+                    pt_values.add("16");
+                    pt_values.add("24");
+                    pt_values.add("36");
+                    showMenu(pt_values, getAnnotRect());
+                }
+                
+                else if (str.equals("8") || str.equals("11") || str.equals("16") ||
+                        str.equals("24") || str.equals("36")) {
+                    try {
+                        mPDFView.lockDoc(true);
+                        FreeText freeText = new FreeText(mAnnot);
+                        freeText.setFontSize(Integer.parseInt(str));
+                        freeText.refreshAppearance();
+
+                        // Let's recalculate the selection bounding box
+                        buildAnnotBBox();
+                        setCtrlPts();
+
+                        mPDFView.update(mAnnot, mAnnotPageNum);
+
+                        showMenu(mMenuTitles, getAnnotRect());
+                    }
+                    catch (Exception e) {
+                    }
+                    finally {
+                        mPDFView.unlockDoc();
+                    }
+                    
+                    SharedPreferences settings = mPDFView.getContext().getSharedPreferences(Tool.PREFS_FILE_NAME, 0);
+                    SharedPreferences.Editor editor = settings.edit();
+                    editor.putInt("annotation_freetext_creation_size", Integer.parseInt(str));
+                    editor.commit();
+                }
 				
 				//change the line thickness of the annotation
 				else if ( str.equals("thickness") ) {
-					if ( android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB ) {
+					if ( android.os.Build.VERSION.SDK_INT < 11 ) { //Build.VERSION_CODES.HONEYCOMB
 						//since number picker is not supported before API 11, just use
 						//menu itmes to do it.
 						LinkedList<String> pt_values = new LinkedList<String>();
@@ -490,7 +639,7 @@ class AnnotEdit extends Tool {
 					if ( page != null ) {
 						te.begin(page);
 						String text = te.getTextUnderAnnot(mAnnot);
-						if ( android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB ) {
+						if ( android.os.Build.VERSION.SDK_INT < 11 ) { //Build.VERSION_CODES.HONEYCOMB
 							android.text.ClipboardManager mgr = (android.text.ClipboardManager) mPDFView.getContext().getSystemService(Context.CLIPBOARD_SERVICE );
 							if ( mgr != null ) {
 								mgr.setText(text);

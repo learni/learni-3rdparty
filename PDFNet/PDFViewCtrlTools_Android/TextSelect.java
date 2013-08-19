@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2012 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2013 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 
@@ -30,7 +30,6 @@ import android.graphics.Path;
 import android.graphics.PointF;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.os.Build;
 import android.view.MotionEvent;
 
 
@@ -277,12 +276,11 @@ class TextSelect extends Tool {
 	
 	public void selectText(float x1, float y1, float x2, float y2, boolean by_rect) {
 		if ( by_rect ) {
-			float delta = 0.01f;
-			x2 += delta;
-			y2 += delta;
-			delta *= 2;
-			x1 = x2 - delta >= 0 ? x2 - delta : 0;
-			y1 = y2 - delta >= 0 ? y2 - delta : 0;
+			RectF textSelectRect = getTextSelectRect(x2, y2);
+			x1 = textSelectRect.left;
+			y1 = textSelectRect.top;
+			x2 = textSelectRect.right;
+			y2 = textSelectRect.bottom;
 		}
 		
 		//clear pre-selected content
@@ -293,7 +291,7 @@ class TextSelect extends Tool {
 		//select text
 		try {
 			//locks the document first as accessing annotation/doc information isn't thread safe.
-			mPDFView.lockDoc(true);
+			mPDFView.lockReadDoc();
 			if ( by_rect ) {
 				mPDFView.selectByRect(x1, y1, x2, y2);
 			}
@@ -304,7 +302,7 @@ class TextSelect extends Tool {
 		catch (Exception e) {
 		}
 		finally {
-			mPDFView.unlockDoc();
+			mPDFView.unlockReadDoc();
 		}
 		
 		//update the bounding box that should include:
@@ -373,6 +371,7 @@ class TextSelect extends Tool {
 				}
 				mSelPath.reset();
 				mNextToolMode = ToolManager.e_pan;
+				
 				return;
 			}
 			
@@ -424,6 +423,7 @@ class TextSelect extends Tool {
 		
 		//dis-select text
 		mNextToolMode = ToolManager.e_pan;
+		
 		mPDFView.clearSelection();
 		mEffSelWidgetId = -1;
 		mSelWidgetEnabled = false;
@@ -584,7 +584,7 @@ class TextSelect extends Tool {
 					text += t;
 				}
 				
-				if ( android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB ) {
+				if ( android.os.Build.VERSION.SDK_INT < 11 ) { //Build.VERSION_CODES.HONEYCOMB
 					android.text.ClipboardManager mgr = (android.text.ClipboardManager) mPDFView.getContext().getSystemService(Context.CLIPBOARD_SERVICE );
 					if ( mgr != null ) {
 						mgr.setText(text);

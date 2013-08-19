@@ -1,5 +1,5 @@
 //---------------------------------------------------------------------------------------
-// Copyright (c) 2001-2012 by PDFTron Systems Inc. All Rights Reserved.
+// Copyright (c) 2001-2013 by PDFTron Systems Inc. All Rights Reserved.
 // Consult legal.txt regarding legal and license information.
 //---------------------------------------------------------------------------------------
 
@@ -17,6 +17,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.view.MotionEvent;
@@ -105,7 +106,7 @@ abstract class Tool implements PDFViewCtrl.Tool{
 	}
 	
 	
-	public void onDocumentDownloadEvent(int type, int page_num, int page_downloaded, int page_count) {
+	public void onDocumentDownloadEvent(int type, int page_num, int page_downloaded, int page_count, String message) {
 //		if ( type == PDFViewCtrl.DOWNLOAD_START ) {
 //			Log.v("PDFNet", "start downloading");
 //		}
@@ -114,6 +115,9 @@ abstract class Tool implements PDFViewCtrl.Tool{
 //		}
 //		else if (type == PDFViewCtrl.DOWNLOAD_FINISH ) {
 //			Log.v("PDFNet", "finished downloading.");
+//		}
+//		else if (type == PDFViewCtrl.DOWNLOAD_FAIL) {
+//		    Log.v("PDFNet", "download fail: " + message);
 //		}
 	}
 	
@@ -239,6 +243,7 @@ abstract class Tool implements PDFViewCtrl.Tool{
 			int height = mPDFView.getHeight();
 			int page_num = mPDFView.getCurrentPage();
 			boolean restore = false;
+			int yOffset = 0;
 			
 			try {
 				//during page sliding, PDFViewCtrl might apply extra transformation
@@ -251,6 +256,22 @@ abstract class Tool implements PDFViewCtrl.Tool{
 					canvas.getMatrix(mTempMtx2);
 					mTempMtx2.postConcat(mTempMtx1);
 					canvas.setMatrix(mTempMtx2);
+					
+                    // Workaround for bug found in Android > ICS with hardware acceleration turned ON.
+                    // See http://code.google.com/p/android/issues/detail?id=24517 for more info.
+                    // Using canvas.translate helps to avoid the problem, but it is still possible to
+                    // see a one or two pixels offset when drawing the page indicator during sliding.
+                    // Using the height of the status bar as an offset resolves the issue without any
+                    // differences between page sliding or just scrolling the page.
+                    //float[] values = new float[9];
+                    //tfm.getValues(values);
+                    //canvas.translate(values[2] * -1f, 1f);
+					if (Build.VERSION.SDK_INT >= 14 /*Build.VERSION_CODES.ICE_CREAM_SANDWICH*/ &&
+                            mPDFView.isHardwareAccelerated()) {
+                        Rect rectgle = new Rect();
+                        ((android.app.Activity)mPDFView.getContext()).getWindow().getDecorView().getWindowVisibleDisplayFrame(rectgle);
+                        yOffset = rectgle.top;
+                    }
 				}
 				
 				String str = new String();
@@ -265,7 +286,7 @@ abstract class Tool implements PDFViewCtrl.Tool{
 				float margin = str_height/1.5f;
 				float left = width - str_width * 1.5f - margin + mPDFView.getScrollX();
 				
-				float top = mPDFView.getScrollY() + height - mPageNumPosAdjust - str_height * 3.0f;
+				float top = mPDFView.getScrollY() + height - mPageNumPosAdjust - str_height * 3.0f + yOffset;
 				
 				float right = left + str_width + margin * 2;
 				float bottom = top + str_height + margin * 2;
@@ -414,7 +435,7 @@ abstract class Tool implements PDFViewCtrl.Tool{
 		RectF rect = null;
 		if ( page_num >= 1 ) {
 			try {
-				mPDFView.lockDoc(true);	
+				mPDFView.lockReadDoc();
 				Page page = mPDFView.getDoc().getPage(page_num);
 				if ( page != null ) {
 					rect = new RectF();
@@ -447,7 +468,7 @@ abstract class Tool implements PDFViewCtrl.Tool{
 			catch (Exception e) {
 			}
 			finally {
-				mPDFView.unlockDoc();
+				mPDFView.unlockReadDoc();
 			}
 		}
 		return rect;
@@ -469,5 +490,20 @@ abstract class Tool implements PDFViewCtrl.Tool{
 	protected float convPix2Dp(float pix) {
 		float density = mPDFView.getContext().getResources().getDisplayMetrics().density;
 		return pix / density;
+	}
+	
+	/**
+	 * Gets a rectangle to use when selecting text.
+	 */
+	protected RectF getTextSelectRect(float x, float y) {
+		float delta = 0.5f;
+		float x2 = x + delta;
+		float y2 = y + delta;
+		delta *= 2;
+		float x1 = x2 - delta >= 0 ? x2 - delta : 0;
+		float y1 = y2 - delta >= 0 ? y2 - delta : 0;
+		
+		RectF r = new RectF(x1, y1, x2, y2);
+		return r;
 	}
 }
