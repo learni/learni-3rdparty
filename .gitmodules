@@ -4,3 +4,9 @@
 [submodule "boto"]
 	path = boto
 	url = git@bitbucket.org:Lior/boto.git
+[submodule "cssselect"]
+	path = cssselect
+	url = https://github.com/SimonSapin/cssselect.git
+[submodule "python-goose"]
+	path = python-goose
+	url = https://github.com/nimast/python-goose.git
