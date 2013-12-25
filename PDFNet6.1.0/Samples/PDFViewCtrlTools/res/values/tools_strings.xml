@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tools -->
+    <string name="tools_qm_text">Text</string>
+    <string name="tools_qm_note">Note</string>
+    <string name="tools_qm_text_color">Text Color</string>
+    <string name="tools_qm_text_size">Text Size</string>
+    <string name="tools_qm_color">Color</string>
+    <string name="tools_qm_thickness">Thickness</string>
+    <string name="tools_qm_delete">Delete</string>
+    <string name="tools_qm_copy_to_clipboard">Copy to Clipboard</string>
+    <string name="tools_qm_sign_and_save">Sign and Save</string>
+    <string name="tools_qm_field_signed">Field is digitally signed</string>
+    <string name="tools_qm_copy">Copy</string>
+    <string name="tools_qm_highlight">Highlight</string>
+    <string name="tools_qm_underline">Underline</string>
+    <string name="tools_qm_crossout">Crossout</string>
+    <string name="tools_qm_squiggly">Squiggly</string>
+    <string name="tools_qm_line">Line</string>
+    <string name="tools_qm_arrow">Arrow</string>
+    <string name="tools_qm_rectangle">Rectangle</string>
+    <string name="tools_qm_oval">Oval</string>
+    <string name="tools_qm_freehand">Freehand</string>
+    <string name="tools_qm_free_text">Free Text</string>
+    <string name="tools_qm_sticky_note">Sticky Note</string>
+
+    <string name="tools_dialog_colorpicker_title">Pick a Color</string>
+
+    <string name="tools_dialog_thicknesspicker_title">Thickness in Point</string>
+
+    <string name="tools_dialog_formfilltext_title">Text Field Content</string>
+
+    <string name="tools_dialog_textsearch_title">Text Search Options</string>
+    <string name="tools_dialog_textsearch_wholeword">Whole word</string>
+    <string name="tools_dialog_textsearch_case_sensitive">Case sensitive</string>
+    <string name="tools_dialog_textsearch_regexp">Regular expressions</string>
+
+    <string name="tools_dialog_textsearch_nothing_found">Nothing was found</string>
+    <string name="tools_dialog_textsearch_invalid_string">Invalid search string</string>
+    <string name="tools_dialog_textsearch_search_canceled">Text search canceled</string>
+
+    <string name="tools_digitalsignature_error_invalid_image_path">Error while applying appearance (invalid image file path); file not signed.</string>
+    <string name="tools_digitalsignature_error_appearance">Error while applying appearance; file not signed.</string>
+    <string name="tools_digitalsignature_use_appearance">Use Appearance</string>
+    <string name="tools_digitalsignature_msg_saved">Saved \"%1$s\"</string>
+    <string name="tools_digitalsignature_msg_file_locked">Failed to save: file is locked for writing</string>
+    <string name="tools_digitalsignature_msg_failed_to_save">Failed to save the file: %1$s</string>
+    <string name="tools_digitalsignature_text_1">You can use the space below to draw you signature, or just click the \"Pick image...\" button to use an image instead.</string>
+    <string name="tools_digitalsignature_text_2">By clicking "Sign and Save" the document will be digitally signed using a pre-existent certificate and password, and saved. If you prefer to just add the signature to the field and digitally sign it later, click \"Use Appearance\". Using just the appearance will allow you to further change the thickness and color of the signature.</string>
+    <string name="tools_digitalsignature_pick_image">Pick image...</string>
+    <string name="tools_digitalsignature_erase">Erase</string>
+    <string name="tools_digitalsignature_adding_signature">Adding a signature...</string>
+    <string name="tools_digitalsignature_choose_image">Choose an image for the signature...</string>
+    <string name="tools_digitalsignature_field_already_signed">This field is already signed. Below some information about the signature entry:</string>
+    <string name="tools_digitalsignature_location">Location:</string>
+    <string name="tools_digitalsignature_reason">Reason:</string>
+    <string name="tools_digitalsignature_name">Name:</string>
+    <string name="tools_digitalsignature_signature_info">Signature Info</string>
+
+    <string name="tools_richmedia_playback_end">End of video playback</string>
+    <string name="tools_richmedia_error_extracting_media">Error while extracting embedded media</string>
+    <string name="tools_richmedia_unsupported_format">Unsupported media format</string>
+    <string name="tools_richmedia_please_wait_loading">Please wait while loading...</string>
+
+    <string name="tools_misc_ok">OK</string>
+    <string name="tools_misc_cancel">Cancel</string>
+    <string name="tools_misc_openwith">Open with...</string>
+    <string name="tools_misc_sendemail">Send email...</string>
+    <string name="tools_misc_longpressforoptions">Long press for options</string>
+    <string name="tools_misc_nofilename">[no file name]</string>
+    <string name="tools_misc_pagerange">%1$d of %2$d</string>
+</resources>

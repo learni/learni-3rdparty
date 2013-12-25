@@ -10,3 +10,6 @@
 [submodule "python-goose"]
 	path = python-goose
 	url = https://github.com/nimast/python-goose.git
+[submodule "keen"]
+	path = keen
+	url = https://github.com/keenlabs/KeenClient-Python.git
