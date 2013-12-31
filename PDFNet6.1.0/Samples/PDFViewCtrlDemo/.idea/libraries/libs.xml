@@ -1,9 +1,8 @@
 <component name="libraryTable">
   <library name="libs">
     <CLASSES>
-      <root url="jar://$PROJECT_DIR$/../PDFViewCtrlTools/libs/scprov-jdk15on-1.47.0.2.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../PDFViewCtrlTools/libs/sc-light-jdk15on-1.47.0.2.jar!/" />
-      <root url="jar://$PROJECT_DIR$/../PDFViewCtrlTools/libs/scpkix-jdk15on-1.47.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/PDFNet.jar!/" />
+      <root url="jar://$PROJECT_DIR$/libs/android-support-v4.jar!/" />
     </CLASSES>
     <JAVADOC />
     <SOURCES />

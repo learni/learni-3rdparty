@@ -13,3 +13,6 @@
 [submodule "keen"]
 	path = keen
 	url = https://github.com/keenlabs/KeenClient-Python.git
+[submodule "requests"]
+	path = requests
+	url = git://github.com/kennethreitz/requests.git
