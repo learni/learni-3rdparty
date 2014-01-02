@@ -1,9 +1,6 @@
-[submodule "android-async-http"]
-	path = android-async-http
-	url = git@bitbucket.org:Lior/android-async-http.git
 [submodule "boto"]
 	path = boto
-	url = git@bitbucket.org:Lior/boto.git
+url=git@github.com:learni/boto.git
 [submodule "cssselect"]
 	path = cssselect
 	url = https://github.com/SimonSapin/cssselect.git
