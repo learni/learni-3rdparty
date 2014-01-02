@@ -1,6 +1,6 @@
 [submodule "boto"]
 	path = boto
-url=git@github.com:learni/boto.git
+	url=git@github.com:learni/boto.git
 [submodule "cssselect"]
 	path = cssselect
 	url = https://github.com/SimonSapin/cssselect.git
