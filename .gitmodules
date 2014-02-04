@@ -13,3 +13,6 @@
 [submodule "requests"]
 	path = requests
 	url = git://github.com/kennethreitz/requests.git
+[submodule "logentries"]
+	path = logentries
+	url = https://github.com/logentries/le_python.git
