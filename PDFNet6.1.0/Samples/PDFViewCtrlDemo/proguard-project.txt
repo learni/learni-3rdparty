@@ -1,4 +1,0 @@
--keep class pdftron.PDF.PDFViewCtrl$RenderCallback { *; }
--keep class pdftron.Filters.CustomFilter$CustomFilterCallback { *; }
--keep class pdftron.PDF.ProgressMonitor { *; }
--keep class pdftron.SDF.ProgressMonitor { *; }

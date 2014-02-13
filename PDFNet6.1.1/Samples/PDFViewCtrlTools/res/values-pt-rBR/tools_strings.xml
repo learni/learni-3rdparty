@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tools -->
+    <string name="tools_qm_text">Texto</string>
+    <string name="tools_qm_note">Nota</string>
+    <string name="tools_qm_text_color">Cor do Texto</string>
+    <string name="tools_qm_text_size">Tamanho do Texto</string>
+    <string name="tools_qm_color">Cor</string>
+    <string name="tools_qm_thickness">Espessura</string>
+    <string name="tools_qm_delete">Apagar</string>
+    <string name="tools_qm_copy_to_clipboard">Copiar para Área de Transferência</string>
+    <string name="tools_qm_sign_and_save">Assinar e Salvar</string>
+    <string name="tools_qm_field_signed">Campo está assinado digitalmente</string>
+    <string name="tools_qm_copy">Copiar</string>
+    <string name="tools_qm_highlight">Realçar</string>
+    <string name="tools_qm_underline">Sublinhar</string>
+    <string name="tools_qm_crossout">Riscar</string>
+    <string name="tools_qm_squiggly">Sublinhar Denteado</string>
+    <string name="tools_qm_line">Linha</string>
+    <string name="tools_qm_arrow">Seta</string>
+    <string name="tools_qm_rectangle">Retângulo</string>
+    <string name="tools_qm_oval">Oval</string>
+    <string name="tools_qm_freehand">Mão Livre</string>
+    <string name="tools_qm_free_text">Texto Livre</string>
+    <string name="tools_qm_sticky_note">Nota de Texto</string>
+
+    <string name="tools_dialog_colorpicker_title">Escolha uma Cor</string>
+
+    <string name="tools_dialog_thicknesspicker_title">Espessura em Pontos</string>
+
+    <string name="tools_dialog_formfilltext_title">Conteúdo do Campo de Texto</string>
+
+    <string name="tools_dialog_textsearch_title">Opções de Busca de Texto</string>
+    <string name="tools_dialog_textsearch_wholeword">Palavra inteira</string>
+    <string name="tools_dialog_textsearch_case_sensitive">Sensível à caixa</string>
+    <string name="tools_dialog_textsearch_regexp">Expressões regulares</string>
+
+    <string name="tools_dialog_textsearch_nothing_found">Nada foi encontrado.</string>
+    <string name="tools_dialog_textsearch_invalid_string">Texto de busca inválido</string>
+    <string name="tools_dialog_textsearch_search_canceled">Busca cancelada</string>
+
+    <string name="tools_digitalsignature_error_invalid_image_path">Erro ao aplicar aparência (caminho do arquivo de imagem inválido); arquivo não foi assinado.</string>
+    <string name="tools_digitalsignature_error_appearance">Erro ao aplicar aparência; arquivo não foi assinado.</string>
+    <string name="tools_digitalsignature_use_appearance">Usar Aparência</string>
+    <string name="tools_digitalsignature_msg_saved">Salvo \"%1$s\"</string>
+    <string name="tools_digitalsignature_msg_file_locked">Falha ao salvar: arquiv está bloqueado para escrita</string>
+    <string name="tools_digitalsignature_msg_failed_to_save">Falha ao salvar o arquivo: %1$s</string>
+    <string name="tools_digitalsignature_text_1">Você pode user o espaço abaixo para desenhar sua assinatura, ou apenas clique o botão \"Escolha imagem...\" para usar uma imagem.</string>
+    <string name="tools_digitalsignature_text_2">Clicando em \"Assinar e Salvar\" o documento será assinado digitalmente usando um certificado e senha pré-existentes e salvo. Se você preferir apenas aplicar a imagem da assinatura ao campo e assinar digitalmente mais tarde, clique \"Usar Aparência\". Usando somente a aparência irá permitir modificações à espessura e cor da assinatura.</string>
+    <string name="tools_digitalsignature_pick_image">Escolha imagem...</string>
+    <string name="tools_digitalsignature_erase">Apagar</string>
+    <string name="tools_digitalsignature_adding_signature">Adicionando uma assinatura...</string>
+    <string name="tools_digitalsignature_choose_image">Escolha uma imagem para a assinatura...</string>
+    <string name="tools_digitalsignature_field_already_signed">Este campo já está assinado. Abaixo algumas informações sobre a assinatura:</string>
+    <string name="tools_digitalsignature_location">Local:</string>
+    <string name="tools_digitalsignature_reason">Razão:</string>
+    <string name="tools_digitalsignature_name">Nome:</string>
+    <string name="tools_digitalsignature_signature_info">Informação da Assinatura</string>
+
+    <string name="tools_richmedia_playback_end">Fim do vídeo</string>
+    <string name="tools_richmedia_error_extracting_media">Erro ao extrair mídia</string>
+    <string name="tools_richmedia_unsupported_format">Formato de mídia não suportado</string>
+    <string name="tools_richmedia_please_wait_loading">Por favor, aguarde enquanto mídia é carregada...</string>
+
+    <string name="tools_misc_ok">OK</string>
+    <string name="tools_misc_cancel">Cancelar</string>
+    <string name="tools_misc_openwith">Abrir com...</string>
+    <string name="tools_misc_sendemail">Enviar email...</string>
+    <string name="tools_misc_longpressforoptions">Pressione (longo) para opções</string>
+    <string name="tools_misc_nofilename">[sem nome de arquivo]</string>
+    <string name="tools_misc_pagerange">%1$d de %2$d</string>
+</resources>

@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html;charset=iso-8859-1">
+        <meta name="description" content="PDFNet SDK is the complete PDF toolkit. Using PDFNet library you can write stand-alone, cross-platform, and reliable commercial applications that can read, write, and edit PDF documents in C#, VB.NET, C++, and other languages"/>
+        <link href="Doc/images/tronsheet.css" type="text/css" rel="stylesheet">
+        <title>PDFTron PDFNet</title>
+    </head>
+
+    <body>
+        <table class="main" cellspacing="0" cellpadding="0" align="center">
+            <tr><td><img src="Doc/images/banner_logo.gif" alt="PDFTron logo"></td></tr>
+            
+            <tr><td class="cont">
+                <table cellspacing="10" cellpadding="0">
+                    <tr><td  style="vertical-align:top;">
+
+
+                        <h1>About PDFNet SDK</h1>
+                        <p>
+                        PDFNet SDK is a high-quality, industry-strength PDF library meeting requirements of the most demanding and diverse applications. Using PDFNet you can write stand-alone, cross-platform, and reliable commercial applications that can read, write, edit, print and display PDF documents. PDFNet SDK is available as a .NET component and as a cross-platform Java and C/C++ PDF library available on a wide range of platforms (i.e. Windows, Linux, Mac OS X, Solaris, Windows Mobile, iOS, Android etc). For more information, please visit us at <a href="http://www.pdftron.com">www.pdftron.com</a>.
+                        </p>
+
+                        <br/>
+
+                        <h1>Note about version 6.1.0</h1>
+                        <p>
+                        PDFNet for Android is now available in a new <b>Standard</b> feature reduced variant (a.k.a. 'lean'). The Standard library offers the same viewing, annotation, and editing capabilities of the fully featured library however much smaller. The parts that are missing are relatively rarely used components:
+                        <ul>
+                            <li>Convert, Optimizer, Redactor, Stamper, Flattener classes</li>
+                            <li>PDF/A validation/conversion</li>
+                            <li>Converting PDF pages to TIFF and PNG formats (ie, PDFDraw will not work when using these formats)</li>
+                        </ul>
+                        </p>
+                        <p>
+                        The <b>Full</b> variant, also found in the <a href="Lib/">Lib</a> folder, contains all the features above. Another change for this version is that embedded fonts, CMaps, and standard PDF resources were separated from the libraries into a file ('pdfnet.res') that can be shared among multiple .so libs. Check the <a href="#Resource">Resource</a> section for more information.
+                        </p>
+                        <p>
+                        Starting with 6.1.0 the library only supports Android 2.3 (Gingerbread) or higher.
+                        </p>
+
+                        <br/>
+
+                        <h1>Package Directory Structure Overview</h1>
+                        <ul>
+                            <li><a href="Doc/">Doc</a> - The folder containing PDFNet API Reference.</li>
+                            <li><a href="Headers/">Headers</a> - The folder containing C++ headers for developing native code.</li>
+                            <li><a href="Lib/">Lib</a> - The folder containing PDFNet libraries.</li>
+                            <li><a href="Resource/">Resource</a> - The folder containing the PDFNet resource file.</li>
+                            <li><a href="Samples/">Samples</a> - The folder containing sample projects and the Tools library.</li>
+                            <li><a href="Getting Started with PDFNet for Android.pdf">Getting Started with PDFNet for Android.pdf</a> - A tutorial with a step-by-step example for a basic viewer using PDFViewCtrl.</li>
+                            <li><a href="legal.txt">legal.txt</a> - Legal and copyright information.</li>
+                            <li><a href="license.pdf">license.pdf</a> - CPU license agreement and warranty for this product.</li>
+                            <li><a href="readme.html">readme.html</a> - This file.</li>
+                            <li><a href="version.txt">version.txt</a> - Native and SDK version information.</li>
+                        </ul>
+
+
+                        <h1>Headers</h1>
+                        <ul>
+                            <li>Contains the C++ header files that can be used with the native library in 'Lib' folder. These files are only provided for developing native code. Note that some unsuitable classes, including PDFView, PDFViewCtrl and Print, are not included.</li>
+                        </ul>
+
+
+                        <h1>Lib</h1>
+                        <ul>
+                            <li>Contains the PDFNet library (PDFNet.jar) for <a href="./Doc/pdftron/PDF/PDFViewCtrl.html">PDFViewCtrl</a> class. The libraries support Android 2.3 or higher.</li>
+                            <li>Contains the native Standard and Full libraries 'armeabi/libPDFNetC.so' (arm version), 'armeabi-v7a/libPDFNetC-v7a.so' (arm-v7 version), and 'x86/libPDFNetC.so' (x86 version). Note that the x86 library has only been tested on Android 4.1 (API 16).</li>
+                            <li>To use the SDK you will need to compile with API level 11 (or higher) as the SDK uses some Honeycomb features if those are present at run-time.</li>
+                            <li>Also note that it will be necessary to add to your res/raw folder the PDFNet resources file ("pdfnet.res"). This file contains information about embedded fonts, etc. Please, see <a href="#Resource">Resource</a> section for more information.</li>
+                        </ul>
+
+
+                        <h1 id="Resource">Resource</h1>
+                        <p>
+                        Contains the PDFNet resources file that contains information about embedded fonts, CMaps, and standard PDF resources.
+                        </p>
+                        <p>
+                        This file was included to allow developers to have more control over the size of the generated APK. If you want to create an APK with two or more shared libraries (let's say, for arm and arm-v7) you need to include the resources only once.
+                        </p>
+                        <p>
+                        To correctly view generic PDF documents you must load the external resources file using one of the following options:
+                        <ul>
+                            <li>PDFNet.initialize() includes an extra parameter that can be used to load the resource file from the application bundle. For example: PDFNet.initialize(this, R.raw.pdfnet). This method will copy the file from 'res/raw/pdfnet.res' to the private storage area of the app (Context.openFileOutput()). An exception will be thrown if there is no sufficient space to save the file, or if the resource ID can't be found. Please note that the resource file must be named "pdfnet.res" when using this approach.</li>
+                            <li>PDFNet.initialize(Context) as before followed by PDFNet.setResourcesPath("path/to/resources/file"). With this method you are handling installation of the resource file on your own. For example, the resource file can be downloaded on demand and saved at any location. When the resource file is ready for use it can be loaded using PDFNet.setResourcesPath().</li>
+                        </ul>
+                        </p>
+
+
+                        <h1>Samples</h1>
+                        <ul>
+                            <li>
+                                <a href="Samples/PDFViewCtrlDemo">PDFViewCtrlDemo</a> shows how to use <a href="./Doc/pdftron/PDF/PDFViewCtrl.html">PDFViewCtrl</a> to easily build a PDF viewer with a rich set of functionalities.<br/>
+                                Some hints about using this viewer:
+                                <ol>
+                                    <li>pinch or double tap to zoom;</li>
+                                    <li>long press in an empty region to bring up annotation menu;</li>
+                                    <li>long press on text for text selection;</li>
+                                    <li>single tap or long press on a annotation to select it;</li>
+                                    <li>tap in the top quarter to bring up the top tool bar (for text se arch);</li>
+                                    <li>tap in the bottom quarter to bring up the bottom tool bar (for page navigation);</li>
+                                    <li>click the option menu on the system tool bar for more options.</li>
+                                </ol>
+                            </li>
+                            <li>
+                                <a href="Samples/PDFViewCtrlDemoTools">PDFViewCtrlDemoTools</a> library offers, via <a href="./Doc/pdftron/PDF/PDFViewCtrl.ToolManager.html">PDFViewCtrl's tool interface</a>, UI modules that use PDFNet functions to add extra ready-to-use components such as annotation editing, text selection, text search, form filling, quick menu, etc. It is structured in a way that allows the developer to quickly customized it for a rapid development project. This project is shipped as an <a href="http://developer.android.com/tools/projects/index.html#LibraryProjects" target="_blank">Android library</a>.
+                            </li>
+                            <li>
+                                <a href="Samples/PDFDrawDemo">PDFDrawDemo</a> is a simple example that shows how <a href = "./Doc/pdftron/PDF/PDFDraw.html">PDFDraw</a> can be used to make a simple PDF viewer. Tap top (bottom) half of the viewer to turn pages backward (forward).
+                            </li>
+                            <li>
+                                <a href="Samples/MiscellaneousSamples">MiscellaneousSamples</a> is an application that shows the functionalities of the PDFNet SDK and includes the samples found in the <a href="http://www.pdftron.com/pdfnet/samplecode.html">sample code</a> page. Inspect its source code to learn how to use some of the main classes and features of the SDK, or just run the sample and check the results.<br/>
+                                Notes:
+                                <ul>
+                                    <li>Some samples are disabled due to the fact that the Standard libraries do not include some features. If using the Full libraries please look at the source code of such samples to make the appropriate changes.</li>
+                                </ul>
+                            </li>
+                        </ul>
+
+                        <br/>
+
+                        <h1>How to Build with Eclipse</h1>
+                        It is convenient to build and debug an Android project using Google's ADT Plugin. The following steps brief how to build, say PDFViewCtrlDemo and PDFViewCtrlTools, using Eclipse with ADT.
+                        <p/>
+                        If you still do not have the IDE installed, we suggest using the <a href="http://developer.android.com/sdk/index.html" target="_blank">ADT Bundle</a>.
+                        <p/>
+                        First we need to build the PDFViewCtrlTools library:
+                        <ul>
+                            <li>Copy the PDFNet.jar file from 'Lib' to the PDFViewCtrlTools's 'libs' folder. You only need this jar file to build the Tools library because this project will not be executed as an Android application.</li>
+                            <li>In Eclipse, go to 'File -> New -> Project...' and select 'Android -> Android Project from Existing code'.</li>
+                            <li>Select the PDFViewCtrlTools folder as the root directory and click 'Finish'.</li>
+                            <li>Right click the project 'PDFViewCtrlTools' in the Package Explore panel and select 'Properties'.</li>
+                            <li>Under the 'Android' category, make sure the 'Is Library' checkbox is checked and if a target API is selected.</li>
+                            <li>You now are ready to build the library.</li>
+                        </ul>
+                        <p/>
+                        Now we will add the PDFViewCtrlDemo project into Eclipse:
+                        <ul>
+                            <li>You don't need to copy the PDFNet.jar again into this project, since we will referece the Tools project later. But you must add to your project the native library(ies). Copy the content from 'Lib\Standard' or 'Lib\Full' to the PDFViewCtrlDemo's 'libs' folder. Your project libs folder should have something like this structure:
+                            <ul>
+                                <li>libs\armeabi\libPDFNetC.so</li>
+                                <li>libs\armeabi-v7a\libPDFNetC-v7a.so</li>
+                                <li>libs\x86\libPDFNetC.so</li>
+                                <li>libs\android-support-v4.jar</li>
+                            </ul>
+                            You can copy all the subfolders ('armeabi', 'armeabi-v7a' and 'x86') to make the output apk compatible on all platforms. Android will load the proper library during installation. If you know which platform is targeted, you only need to copy one of them.</li>
+                            <li>In Eclipse, go to 'File -> New -> Project...' and select 'Android -> Android Project from Existing code'.</li>
+                            <li>Select the PDFViewCtrlDemo folder as the root directory and click 'Finish'.</li>
+                            <li>Now we need to reference the Tools library. Right click the project 'PDFViewCtrlDemo' in the Package Explore panel and select 'Properties'.</li>
+                            <li>Under the 'Android' category, in the Library section, click 'Add...'</li>
+                            <li>The next dialog should show all the projects opened in Eclipse that are marked as 'Is Library'. Choose PDFViewCtrlTools and click 'OK'.</li>
+                            <li>The Library section should show now the PDFViewCtrlTools in the list, and if everything is correct a green check will be shown. Please note that Eclipse will not work correctly if the library project being referenced is not placed in the same drive, since Eclipse/Android do not use the full path.</li>
+                        </ul>
+                        Now, you are ready to build and run the project given that you have an Android device available. You can use either a <a target="_blank" href="http://developer.android.com/guide/developing/devices/index.html">virtual device</a> or a <a target="_blank" href="http://developer.android.com/guide/developing/device.html">hardware device</a>.
+
+                        <br/><br/>
+
+                        <h1>Using ProGuard</h1>
+                        If you plan to use ProGuard on your APK before releasing your app, you will need to add to your proguard configuration file the following lines:
+                        <ul>
+                            <li>-keep class pdftron.PDF.PDFViewCtrl$RenderCallback { *; }</li>
+                            <li>-keep class pdftron.Filters.CustomFilter$CustomFilterCallback { *; }</li>
+                            <li>-keep class pdftron.PDF.ProgressMonitor { *; }</li>
+                            <li>-keep class pdftron.SDF.ProgressMonitor { *; }</li>
+                        </ul>
+                        This will ensure that the native calls to the rendering callback will not be obfuscated.
+
+                        <br/><br/>
+
+                        <h1>More Documentation</h1>
+                        <ul>
+                            <li>Getting Started: <a href="Getting Started with PDFNet for Android.pdf" target="_blank">Getting Started with PDFNet for Android.pdf</a></li>
+                            <li>PDFNet What's New: <a href="http://www.pdftron.com/pdfnet/whatsnew.html" target="_blank">http://www.pdftron.com/pdfnet/whatsnew.html</a></li>
+                            <li>PDFNet FAQ: <a href="http://www.pdftron.com/pdfnet/faq.html" target="_blank">http://www.pdftron.com/pdfnet/faq.html</a></li>
+                            <li>PDFNet Knowledge Base: <a href="http://groups.google.com/group/pdfnet-sdk" target="_blank">http://groups.google.com/group/pdfnet-sdk</a></li>
+                            <li>PDFNet Sample Code: <a href="http://www.pdftron.com/pdfnet/samplecode.html" target="_blank">http://www.pdftron.com/pdfnet/samplecode.html</a></li>
+                            <li>PDFNet Documentation: <a href="http://www.pdftron.com/pdfnet/documentation.html" target="_blank">http://www.pdftron.com/pdfnet/documentation.html</a></li>
+                        </ul>
+
+                        <br/>
+
+                        <h1>Technical Support</h1>
+                        <p>At PDFTron, we understand that good technical support is as important to our customers as our products themselves. Our technical support team consists of the same developers that build our products, work on new features and fix the bugs. This ensures that our customers receive accurate and to-the-point answers to their questions or problems.</p>
+                        <p>For details related to technical support, please refer to PDFTron support page: <a href="http://www.pdftron.com/support">http://www.pdftron.com/support</a>. </p>
+                        <p>You can submit bug reports directly through our support webpage (<a href="http://www.pdftron.com/support/reportproblem.html">http://www.pdftron.com/support/reportproblem.html</a>) or by sending a bug report via email to <a href="mailto:support@pdftron.com">support@pdftron.com</a>.</p>
+                        <p>If you are sending an email, please include the following information when submitting a bug report:</p>
+                        <ul>
+                            <li>Your Name and Company / Contact information.</li>
+                            <li>PDFNet Product and Version</li>
+                            <li>Operating System</li>
+                            <li>Detailed description of the problem.</li>
+                            <li>Are you subscribed to annual maintenance?</li>
+                        </ul>
+
+                        <br/>
+
+                        <h1>Call for Success Stories!</h1>
+                        <p>We are always looking for practical examples of solutions achieved by our customers using our products, as well as, feedback on your level of satisfaction with our products and customer service.</p>
+                        <p>If you have an interesting solution using our products or would like to offer us some feedback, please email: <a href="mailto:info@pdftron.com">info@pdftron.com</a>.</p>
+                        <p>Thank you!</p>
+                        <br>
+                        <hr>
+                        <p>Copyright (c) 2002-2013 by PDFTron Systems, Inc. All Rights Reserved. PDFTron, PDFNet SDK and PDF CosEdit are either trademarks and/or service marks and/or registered trademarks of PDFTron Systems Incorporated in Canada, United States and/or other countries.</p>
+                    </td></tr>
+                </table>
+            </td></tr>
+        </table>
+    </body>
+</html>
