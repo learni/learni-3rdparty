@@ -18,4 +18,4 @@
 	url = https://github.com/logentries/le_python.git
 [submodule "urbanairship-python"]
 	path = urbanairship-python
-	url = https://github.com/urbanairship/python-library
+	url= https://github.com/wangsha/python-library.git
